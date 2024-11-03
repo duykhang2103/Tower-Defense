@@ -12,52 +12,42 @@ public class Enemy : MonoBehaviour
 
     private Animator animator;
     private Coroutine followPathCoroutine;
+    private SpriteRenderer spriteRenderer;
     private bool isFighting;
     private int currentPointIndex = 0;
-
+    private Soldier soldier;
     void Start()
     {
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         LoadPath();
         SetSpawnPoint();
         StartMoving();
     }
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            EnterFightMode();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ExitFightMode();
-        }
-    }
-
-    private void EnterFightMode()
-    {
-        animator.SetBool("isFighting", true); 
-        isFighting = true;
-
-        if (followPathCoroutine != null)
-        {
-            StopCoroutine(followPathCoroutine);
-            followPathCoroutine = null;
-        }
-    }
-
-    private void ExitFightMode()
-    {
-        animator.SetBool("isFighting", false); 
-        isFighting = false;
         
-        StartMoving();
+    }
+    public bool isTargeted() {
+        return soldier != null;
     }
 
+    public void Attack(Soldier _soldier) {
+        spriteRenderer.flipX = true;
+        soldier = _soldier;
+        Debug.Log("enemy attack to soldier");
+        if (followPathCoroutine != null) {
+            StopCoroutine(followPathCoroutine);
+        }
+            
+        
+    }
+    public void FightWithSoldier() {
+       animator.SetBool("fight", true);
+    }
     private void StartMoving()
     {
+        animator.SetBool("run", true);
         if (!isFighting && followPathCoroutine == null)
         {
             followPathCoroutine = StartCoroutine(FollowPath());
@@ -74,6 +64,7 @@ public class Enemy : MonoBehaviour
             string json = File.ReadAllText(fullPath);
             PathData pathData = JsonUtility.FromJson<PathData>(json);
             pathPoints = pathData.points;
+            
             Debug.Log($"Loaded path for {enemyName}: {pathPoints.Count} points.");
         }
         else
@@ -105,7 +96,11 @@ public class Enemy : MonoBehaviour
         while (currentPointIndex < pathPoints.Count)
         {
             Vector3 targetPosition = pathPoints[currentPointIndex];
-            
+            if (targetPosition.x < transform.position.x) {
+                 spriteRenderer.flipX = true;
+            } else {
+                spriteRenderer.flipX = false;
+            }
             while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
                 if (isFighting) yield break;

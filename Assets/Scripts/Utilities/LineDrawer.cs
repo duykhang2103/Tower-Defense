@@ -34,7 +34,7 @@ public class LineDrawer : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = 0; 
+            mousePos.z = -6; 
             AddPoint(mousePos);
         }
 
