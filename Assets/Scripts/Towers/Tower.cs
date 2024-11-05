@@ -26,13 +26,14 @@
 
         void Update()
         {
-
+            if (!soldier) {
+                status = 0;
+            }
         }
 
         
         private void OnMouseDown()
         {
-            Debug.Log("isFocused");
             isFocused = !isFocused;
             SetButtonsActive(isFocused);
         }
@@ -59,17 +60,13 @@
                     prefabToInstantiate = warriorPrefab; break;
                 default:
                     Debug.LogWarning("Unknown soldier type: " + soldierType);
-                    yield break; // Dừng coroutine nếu loại lính không hợp lệ
+                    yield break;
             }
 
             if (prefabToInstantiate != null)
             {
-                Debug.Log("Tower position: " + transform.localPosition);
                 soldier = Instantiate(prefabToInstantiate, transform.TransformPoint(new Vector3(0, -1, -1)), Quaternion.identity, transform);
-
                 soldier.GetComponent<Soldier>().SetTower(this);
-                Debug.Log("Soldier position: " + soldier.transform.localPosition);
-                
             }
             yield return new WaitForSeconds(0.1f); 
             status = 1;

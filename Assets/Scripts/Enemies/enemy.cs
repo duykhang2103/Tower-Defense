@@ -2,24 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public string enemyName;         
+
+    public string enemyName;        
+    public int maxHealth = 100; 
+    public int health = 100;
+    public int atk = 10;
     public float speed;               
     public string pathFileName;          
     public List<Vector3> pathPoints;
 
-    private Animator animator;
+    protected Animator animator;
+
+    protected Soldier soldier;
+
+    private Slider healthBar;
     private Coroutine followPathCoroutine;
     private SpriteRenderer spriteRenderer;
-    private bool isFighting;
     private int currentPointIndex = 0;
-    private Soldier soldier;
-    void Start()
+    
+
+    
+    public void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        healthBar = GetComponentInChildren<Slider>();
+        if (healthBar) {
+            healthBar.maxValue = maxHealth;
+            UpdateHealthBar();
+        }
+        
+
         LoadPath();
         SetSpawnPoint();
         StartMoving();
@@ -36,36 +53,44 @@ public class Enemy : MonoBehaviour
         spriteRenderer.flipX = true;
         soldier = _soldier;
         Debug.Log("enemy attack to soldier");
+        FightWithSoldier();
         if (followPathCoroutine != null) {
             StopCoroutine(followPathCoroutine);
         }
-            
         
     }
-    public void FightWithSoldier() {
-       animator.SetBool("fight", true);
+    virtual public void FightWithSoldier() {
+    //    animator.SetBool("fight", true);
     }
-    private void StartMoving()
+    virtual public void TakeDamage(int damage) {
+        // Debug.Log("enemy take damage from soldier");
+    }
+    public void UpdateHealthBar() {
+        if (healthBar != null)
+        {
+            healthBar.value = health; 
+            if (healthBar.value == healthBar.maxValue) {
+                healthBar.gameObject.SetActive(false);
+            }
+            else healthBar.gameObject.SetActive(true);
+        }
+       
+    }
+    protected void StartMoving()
     {
         animator.SetBool("run", true);
-        if (!isFighting && followPathCoroutine == null)
-        {
-            followPathCoroutine = StartCoroutine(FollowPath());
-        }
+        followPathCoroutine = StartCoroutine(FollowPath());
     }
 
     private void LoadPath()
     {
         string fullPath = Path.Combine(Application.dataPath, "Data/Paths", pathFileName);
-        Debug.Log($"Path is {fullPath}");
         
         if (File.Exists(fullPath))
         {
             string json = File.ReadAllText(fullPath);
             PathData pathData = JsonUtility.FromJson<PathData>(json);
             pathPoints = pathData.points;
-            
-            Debug.Log($"Loaded path for {enemyName}: {pathPoints.Count} points.");
         }
         else
         {
@@ -97,13 +122,13 @@ public class Enemy : MonoBehaviour
         {
             Vector3 targetPosition = pathPoints[currentPointIndex];
             if (targetPosition.x < transform.position.x) {
-                 spriteRenderer.flipX = true;
+                 spriteRenderer.flipX = false;
             } else {
-                spriteRenderer.flipX = false;
+                spriteRenderer.flipX = true;
             }
             while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
-                if (isFighting) yield break;
+                if (soldier) yield break;
 
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
                 yield return null;
@@ -113,5 +138,6 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(this.gameObject);
+        GameManager.ModifyPlayerHealth(-1);
     }
 }
