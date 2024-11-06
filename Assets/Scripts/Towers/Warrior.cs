@@ -34,16 +34,15 @@ public class Warrior : Soldier {
                 if (enemy && enemy.health <= 0)
                 {
                     animator.SetBool("fight", false);
+                    
                     enemy = null;
+                    LetMoveSoldier(lastPosition);
                     yield break;
                 }
                 else if (!enemy) {
                     animator.SetBool("fight", false);
+                    LetMoveSoldier(lastPosition);
                 }
-            }
-            else {
-                animator.SetBool("fight", false);
-                yield break;
             }
         }
     }

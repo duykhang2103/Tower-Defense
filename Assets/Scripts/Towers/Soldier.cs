@@ -17,6 +17,8 @@ public class Soldier : MonoBehaviour
     public int maxHealth = 150;
     public int atk = 25;
 
+    protected Vector3 lastPosition;
+
 
     public virtual void Start()
     {
@@ -25,7 +27,8 @@ public class Soldier : MonoBehaviour
         detectionRange = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
         healthBar = GetComponentInChildren<Slider>();
-        if (healthBar) {
+        if (healthBar)
+        {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
         }
@@ -33,21 +36,26 @@ public class Soldier : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0) && isFocused) // move soldier
+        if (!enemy && Input.GetMouseButtonDown(0) && isFocused) // move soldier
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 mouseMousePos = tower.transform.InverseTransformPoint(mousePos);
             mouseMousePos.z = -1;
             if (isMoveInRangeTower(mouseMousePos))
             {
-                if (moveCoroutine != null)
-                {
-                    StopCoroutine(moveCoroutine);
-                }
-
-                moveCoroutine = StartCoroutine(MoveSoldier(mouseMousePos));
+                lastPosition = mouseMousePos;
+                LetMoveSoldier(lastPosition);
             }
         }
+    }
+    protected void LetMoveSoldier(Vector3 mouseMousePos)
+    {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+
+        moveCoroutine = StartCoroutine(MoveSoldier(mouseMousePos));
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -57,7 +65,8 @@ public class Soldier : MonoBehaviour
             enemy = other.GetComponent<Enemy>();
             if (enemy.isTargeted()) return;
             Attack();
-            if (this is Warrior) {
+            if (this is Warrior)
+            {
                 enemy.Attack(this);
             }
         }
@@ -86,6 +95,7 @@ public class Soldier : MonoBehaviour
         animator.SetBool("run", true);
         while (Vector3.Distance(transform.localPosition, targetPosition) > 0.1f)
         {
+            if (enemy) yield break;
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, 5.0f * Time.deltaTime);
             yield return null;
         }
@@ -107,11 +117,13 @@ public class Soldier : MonoBehaviour
     {
         // Debug.og("soldier take damage from enemy");
     }
-    public void UpdateHealthBar() {
+    public void UpdateHealthBar()
+    {
         if (healthBar != null)
         {
-            healthBar.value = health; 
-            if (healthBar.value == healthBar.maxValue) {
+            healthBar.value = health;
+            if (healthBar.value == healthBar.maxValue)
+            {
                 healthBar.gameObject.SetActive(false);
             }
             else healthBar.gameObject.SetActive(true);
