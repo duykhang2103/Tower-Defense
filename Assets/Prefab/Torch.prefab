@@ -596,9 +596,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: torch
+  maxHealth: 100
   health: 100
   atk: 10
-  speed: 5
+  speed: 2
   pathFileName: path1.json
   pathPoints: []
 --- !u!58 &7424847838808309728

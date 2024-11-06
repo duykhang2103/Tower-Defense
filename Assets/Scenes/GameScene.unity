@@ -757,7 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 8444861462025080722, guid: 8bd236d4eeee04baab7773c9580f1e8c, type: 3}
   spawnInterval: 0.1
-  waveSize: 5
+  waveSize: 2
   numWaves: 10
 --- !u!4 &956894679
 Transform:
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 1128279944}
   - component: {fileID: 1128279943}
   m_Layer: 5
-  m_Name: GoldText
+  m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 1160618998}
   - component: {fileID: 1160618997}
   m_Layer: 5
-  m_Name: HealthText
+  m_Name: GoldText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1482,6 +1482,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveManager: {fileID: 956894678}
   startWaveBtn: {fileID: 877962588}
+  healthText: {fileID: 1128279943}
+  goldText: {fileID: 1160618997}
 --- !u!4 &2098626522
 Transform:
   m_ObjectHideFlags: 0

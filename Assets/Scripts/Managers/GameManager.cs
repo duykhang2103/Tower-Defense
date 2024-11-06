@@ -1,51 +1,74 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using TMPro; 
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; } //singleton
+
     public WaveManager waveManager;
     public GameObject startWaveBtn;
-    
-    public static TextMeshProUGUI healthText; 
-    public static TextMeshProUGUI goldText; 
-    private static int playerHealth = 15;
-    private static int gold = 100;
 
-    private void Start()
+    public TextMeshProUGUI healthText; 
+    public TextMeshProUGUI goldText; 
+    private int playerHealth = 15;
+    private int gold = 100;
+
+    
+    private void Awake()
     {
-        healthText = GameObject.Find("HealthText").GetComponent<TextMeshProUGUI>(); // Tìm kiếm đối tượng Text trên scene
-        goldText = GameObject.Find("GoldText").GetComponent<TextMeshProUGUI>();     // Tìm kiếm đối tượng Text trên scene
-        startWaveBtn.SetActive(true); 
-        UpdateHealthText();
-        UpdateGoldText();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); 
+        }
+        else
+        {
+            Instance = this; 
+            DontDestroyOnLoad(gameObject); 
+        }
     }
 
-    public static void UpdateHealthText()
+    public void Start()
+    {
+        UpdateHealthText();
+        UpdateGoldText();
+        startWaveBtn.SetActive(true);
+    }
+
+    public void UpdateHealthText()
     {
         healthText.text = playerHealth.ToString();
     }
 
-    public static void UpdateGoldText()
+    public void UpdateGoldText()
     {
         goldText.text = gold.ToString();
     }
+
+  
     public static void ModifyPlayerHealth(int amount)
     {
-        playerHealth += amount;
-        UpdateHealthText(); 
+        if (Instance != null)
+        {
+            Instance.playerHealth += amount;
+            Instance.UpdateHealthText();
+        }
     }
 
     public static void ModifyGold(int amount)
     {
-        gold += amount;
-        UpdateGoldText();
+        if (Instance != null)
+        {
+            Instance.gold += amount;
+            Instance.UpdateGoldText();
+        }
     }
+
     public void OnStartWaveButtonClicked()
     {
         waveManager.StartWave();
-        startWaveBtn.SetActive(false); 
+        startWaveBtn.SetActive(false);
         StartCoroutine(WaitForWaveEnd());
     }
 
@@ -53,7 +76,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() => waveManager.IsWaveFinished);
         if (waveManager.noMoreWaves) yield break;
-        startWaveBtn.SetActive(true); 
+        startWaveBtn.SetActive(true);
     }
-
 }

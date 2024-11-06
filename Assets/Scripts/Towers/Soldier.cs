@@ -12,13 +12,13 @@ public class Soldier : MonoBehaviour
 
     private Slider healthBar;
     protected Animator animator;
-    private Enemy enemy;
+    protected Enemy enemy;
     public int health = 150;
     public int maxHealth = 150;
     public int atk = 25;
 
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         moveCoroutine = null;
         isFocused = false;
@@ -51,12 +51,24 @@ public class Soldier : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // if enemy in range 
         if (enemy == null && other.tag == "enemy")
         {
             enemy = other.GetComponent<Enemy>();
             if (enemy.isTargeted()) return;
-            Attack(enemy);
-            enemy.Attack(this);
+            Attack();
+            if (this is Warrior) {
+                enemy.Attack(this);
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // if enemy is out of range
+        if (enemy != null && other.gameObject == enemy.gameObject)
+        {
+            Debug.Log("enemy is out of range1");
+            enemy = null;
         }
     }
     private bool isMoveInRangeTower(Vector3 position)
@@ -87,7 +99,7 @@ public class Soldier : MonoBehaviour
     {
         tower = _tower;
     }
-    virtual public void Attack(Enemy enemy)
+    virtual public void Attack()
     {
         // Debug.Log("Soldier attacks");
     }

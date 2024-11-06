@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: 690514236218316583}
   - component: {fileID: 6258692855837598491}
   - component: {fileID: 128329316110184292}
+  - component: {fileID: 8884673244688729633}
   m_Layer: 0
   m_Name: Acher
   m_TagString: Untagged
@@ -401,7 +402,7 @@ Animator:
   m_GameObject: {fileID: 3498091943059631694}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 384788315442756142, guid: 53bf0c34c72bbe34e8b0a9ed2ff16371, type: 3}
+  m_Controller: {fileID: 9100000, guid: e558c64a7056a4ab496a7b42327526dc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -425,7 +426,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 150
+  maxHealth: 150
   atk: 25
+  arrowPrefab: {fileID: 4341666282114818907, guid: 439ec8b9de78940598c54cc436357fbe, type: 3}
 --- !u!61 &128329316110184292
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -471,6 +474,41 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.63, y: 0.75}
   m_EdgeRadius: 0
+--- !u!58 &8884673244688729633
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498091943059631694}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.034999996, y: -0.004999995}
+  serializedVersion: 2
+  m_Radius: 3
 --- !u!1 &4947096890785995586
 GameObject:
   m_ObjectHideFlags: 0

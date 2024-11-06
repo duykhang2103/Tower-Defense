@@ -3,35 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Warrior : Soldier {
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         GameManager.ModifyGold(-10);
     }
-    public override void Attack(Enemy enemy) {
+    public override void Attack() {
         if (enemy != null) 
         {
             Vector3 oppositePositionWithEnemy = enemy.transform.position + Vector3.left; 
-            
             StartCoroutine(MoveWarriorToPosition(oppositePositionWithEnemy));
-            FightWithEnemy(enemy);
+            FightWithEnemy();
             enemy.FightWithSoldier();
         }
       
     }
-    private void FightWithEnemy(Enemy enemy) {
+    private void FightWithEnemy() {
         animator.SetBool("fight", true);
-        StartCoroutine(ApplyDamageToEnemy(enemy));
+        StartCoroutine(ApplyDamageToEnemy());
     }
-    private IEnumerator ApplyDamageToEnemy(Enemy enemy)
+    private IEnumerator ApplyDamageToEnemy()
     {
         Debug.Log("ApllyDamageToEnemy run");
         while (enemy != null && health > 0)
         {
+            
             yield return new WaitForSeconds(1f); 
-            enemy.TakeDamage(atk);
-            Debug.Log($"soldier attacks enemy for {atk} damage!");
-            if (enemy.health <= 0)
-            {
+            if (enemy != null) {
+                enemy.TakeDamage(atk);
+                Debug.Log($"soldier attacks enemy for {atk} damage!");
+                if (enemy && enemy.health <= 0)
+                {
+                    animator.SetBool("fight", false);
+                    enemy = null;
+                    yield break;
+                }
+                else if (!enemy) {
+                    animator.SetBool("fight", false);
+                }
+            }
+            else {
                 animator.SetBool("fight", false);
                 yield break;
             }
