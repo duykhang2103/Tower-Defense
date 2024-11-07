@@ -8,14 +8,12 @@ public class ShootEnemy : MonoBehaviour {
   void Shoot(Collider2D target)
 {
   GameObject bulletPrefab = tower.bullet;
-  // 1 
   Vector3 startPosition = gameObject.transform.position;
   Vector3 targetPosition = target.transform.position;
   startPosition.z = bulletPrefab.transform.position.z;
   targetPosition.z = bulletPrefab.transform.position.z;
 
-  // 2 
-  GameObject newBullet = (GameObject)Instantiate (bulletPrefab);
+  GameObject newBullet = Instantiate (bulletPrefab);
   newBullet.transform.position = startPosition;
   BulletBehavior bulletComp = newBullet.GetComponent<BulletBehavior>();
   bulletComp.target = target.gameObject;
@@ -24,11 +22,33 @@ public class ShootEnemy : MonoBehaviour {
 
 }
 
-
-
   private void Start() {
     enemiesInRange = new List<GameObject>();  
     lastShotTime = Time.time;
+    tower = gameObject.GetComponentInChildren<ShootingTower>();
+  }
+
+  private void Update() {
+    GameObject target = null;
+    float minimalEnemyDistance = float.MaxValue;
+    foreach (GameObject enemy in enemiesInRange) {
+      float distanceToGoal = Vector2.Distance(enemy.transform.position, gameObject.transform.position);
+      if (distanceToGoal < minimalEnemyDistance) {
+        target = enemy;
+        minimalEnemyDistance = distanceToGoal;
+      }
+    }
+    if (target != null) {
+      if (Time.time - lastShotTime > tower.fireRate) {
+        Shoot(target.GetComponent<Collider2D>());
+        lastShotTime = Time.time;
+      }
+      Vector3 direction = gameObject.transform.position - target.transform.position;
+      gameObject.transform.rotation = Quaternion.AngleAxis(
+          Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI,
+          new Vector3(0, 0, 1));
+    }
+    
   }
 
   void OnEnemyDestroy(GameObject enemy)
@@ -41,9 +61,9 @@ public class ShootEnemy : MonoBehaviour {
     if (range.gameObject.tag.Equals("Enemy"))
     {
       enemiesInRange.Add(range.gameObject);
-      EnemyDestructionDelegate del =
-          range.gameObject.GetComponent<EnemyDestructionDelegate>();
-      del.enemyDelegate += OnEnemyDestroy;
+      // EnemyDestructionDelegate del =
+      //     range.gameObject.GetComponent<EnemyDestructionDelegate>();
+      // del.enemyDelegate += OnEnemyDestroy;
     }
   }
 
@@ -52,9 +72,9 @@ public class ShootEnemy : MonoBehaviour {
     if (range.gameObject.tag.Equals("Enemy"))
     {
       enemiesInRange.Remove(range.gameObject);
-      EnemyDestructionDelegate del =
-          range.gameObject.GetComponent<EnemyDestructionDelegate>();
-      del.enemyDelegate -= OnEnemyDestroy;
+      // EnemyDestructionDelegate del =
+      //     range.gameObject.GetComponent<EnemyDestructionDelegate>();
+      // del.enemyDelegate -= OnEnemyDestroy;
     }
   }
 

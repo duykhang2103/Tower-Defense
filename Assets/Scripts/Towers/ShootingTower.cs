@@ -5,6 +5,4 @@ public class ShootingTower : MonoBehaviour {
     public GameObject bullet;
     public float fireRate;
 
-
-
 }

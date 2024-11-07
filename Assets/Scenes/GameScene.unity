@@ -1068,8 +1068,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 10
-  bullet: {fileID: 6829601598727466480, guid: 33bda0cbadfdf414fa9865db6e1b7560, type: 3}
-  fireRate: 10
+  bullet: {fileID: 4981956906524089529, guid: 33bda0cbadfdf414fa9865db6e1b7560, type: 3}
+  fireRate: 0.5
 --- !u!1 &2098626520
 GameObject:
   m_ObjectHideFlags: 0

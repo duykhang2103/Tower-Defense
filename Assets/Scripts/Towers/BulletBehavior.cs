@@ -5,7 +5,7 @@ public class BulletBehavior : MonoBehaviour {
   public GameManager gameManager;
   private float speed = 10;
   private float damage = 1;
-  public GameObject target;
+  public GameObject target = null;
   public Vector3 startPosition;
   public Vector3 targetPosition;
   private float distance;
@@ -14,6 +14,7 @@ public class BulletBehavior : MonoBehaviour {
   void Start() {
     startTime = Time.time;
     distance = Vector3.Distance(startPosition, targetPosition);
+    gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
   }
 
   void Update()
