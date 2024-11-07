@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        playerHealth = 15;
+        gold = 100;
         UpdateHealthText();
         UpdateGoldText();
         startWaveBtn.SetActive(true);
