@@ -17,7 +17,6 @@ public class Archer : Soldier {
     }
     private IEnumerator ContinuousAttack() {
         while (enemy != null && enemy.health >= 0) { 
-            
             Debug.Log("Archer attacks");
             GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
             Arrow arrowScript = arrow.GetComponent<Arrow>();
