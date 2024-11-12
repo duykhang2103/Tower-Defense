@@ -80,4 +80,9 @@ public class GameManager : MonoBehaviour
         if (waveManager.noMoreWaves) yield break;
         startWaveBtn.SetActive(true);
     }
+
+    static public void OnGameOver()
+    {
+        Debug.Log("Game Over");
+    }
 }
