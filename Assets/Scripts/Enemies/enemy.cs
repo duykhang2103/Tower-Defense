@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     public float speed;               
     public string pathFileName;          
     public List<Vector3> pathPoints;
+    public GameObject goldPrefab;
+
 
     protected Animator animator;
 
@@ -111,6 +113,7 @@ public class Enemy : MonoBehaviour
     }
 
     private IEnumerator FollowPath()
+
     {
         if (pathPoints == null || pathPoints.Count == 0)
         {
@@ -139,5 +142,18 @@ public class Enemy : MonoBehaviour
 
         Destroy(this.gameObject);
         GameManager.ModifyPlayerHealth(-1);
+    }
+    private void OnDestroy() {
+        Vector3 position = transform.position;
+        Destroy(gameObject);
+        
+        if (goldPrefab != null)
+        {
+            GameObject coin = Instantiate(goldPrefab, position, Quaternion.identity);
+            Destroy(coin, 2f);
+        }
+        GameManager.ModifyGold(5);
+        
+
     }
 }

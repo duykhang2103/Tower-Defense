@@ -6,6 +6,7 @@ public class EnemyDestructionDelegate  : MonoBehaviour {
 
   void OnDestroy() {
     if (enemyDelegate != null) {
+      
       enemyDelegate(gameObject);
     }
   }

@@ -602,6 +602,7 @@ MonoBehaviour:
   speed: 2
   pathFileName: path1.json
   pathPoints: []
+  goldPrefab: {fileID: 3321611934510342374, guid: 021922b509d6e454bb4225f002ceca83, type: 3}
 --- !u!58 &7424847838808309728
 CircleCollider2D:
   m_ObjectHideFlags: 0
