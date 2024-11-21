@@ -7,14 +7,16 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
 
-    public string enemyName;        
-    public int maxHealth = 100; 
+    public string enemyName;
+    public int maxHealth = 100;
     public int health = 100;
     public int atk = 10;
-    public float speed;               
-    public string pathFileName;          
-    public List<Vector3> pathPoints;
+    public float speed = 2.0F;
+    public string pathFileName = "path3.json";
+    public List<int> pathPointsIndices;
     public GameObject goldPrefab;
+    private GameObject background;
+
 
 
     protected Animator animator;
@@ -23,60 +25,82 @@ public class Enemy : MonoBehaviour
 
     private Slider healthBar;
     private Coroutine followPathCoroutine;
-    private SpriteRenderer spriteRenderer;
+    // private SpriteRenderer spriteRenderer;
     private int currentPointIndex = 0;
-    
+    private List<Transform> waypoints;
+    private Transform bone;
 
-    
+
+
     public void Start()
     {
+        background = GameObject.Find("Background");
+        if (!background)
+        {
+            Debug.LogError("Background object not found!");
+            return;
+        }
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        // spriteRenderer = GetComponent<SpriteRenderer>();
         healthBar = GetComponentInChildren<Slider>();
-        if (healthBar) {
+        if (healthBar)
+        {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
         }
-        
 
+        bone = transform.Find("bone_006");
+        if (bone == null)
+        {
+            Debug.LogError("bone_006 not found!");
+            return;
+        }
         LoadPath();
+        SetWaypoints();
         SetSpawnPoint();
         StartMoving();
     }
     void Update()
     {
-        
+
     }
-    public bool isTargeted() {
+    public bool isTargeted()
+    {
         return soldier != null;
     }
 
-    public void Attack(Soldier _soldier) {
-        spriteRenderer.flipX = true;
+    public void Attack(Soldier _soldier)
+    {
+        // spriteRenderer.flipX = true;
         soldier = _soldier;
         Debug.Log("enemy attack to soldier");
         FightWithSoldier();
-        if (followPathCoroutine != null) {
+        if (followPathCoroutine != null)
+        {
             StopCoroutine(followPathCoroutine);
         }
-        
+
     }
-    virtual public void FightWithSoldier() {
-    //    animator.SetBool("fight", true);
+    virtual public void FightWithSoldier()
+    {
+        //    animator.SetBool("fight", true);
     }
-    virtual public void TakeDamage(int damage) {
+    virtual public void TakeDamage(int damage)
+    {
         // Debug.Log("enemy take damage from soldier");
     }
-    public void UpdateHealthBar() {
+    public void UpdateHealthBar()
+    {
         if (healthBar != null)
         {
-            healthBar.value = health; 
-            if (healthBar.value == healthBar.maxValue) {
+            healthBar.value = health;
+            if (healthBar.value == healthBar.maxValue)
+            {
                 healthBar.gameObject.SetActive(false);
             }
             else healthBar.gameObject.SetActive(true);
         }
-       
+
     }
     protected void StartMoving()
     {
@@ -87,12 +111,12 @@ public class Enemy : MonoBehaviour
     private void LoadPath()
     {
         string fullPath = Path.Combine(Application.dataPath, "Data/Paths", pathFileName);
-        
+
         if (File.Exists(fullPath))
         {
             string json = File.ReadAllText(fullPath);
-            PathData pathData = JsonUtility.FromJson<PathData>(json);
-            pathPoints = pathData.points;
+            PathData pathData = JsonUtility.FromJson<PathData>(json); 
+            pathPointsIndices = pathData.points; 
         }
         else
         {
@@ -100,40 +124,56 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
     private void SetSpawnPoint()
     {
-        if (pathPoints != null && pathPoints.Count > 0)
+        if (waypoints != null && waypoints.Count > 0)
         {
-            transform.position = pathPoints[0]; // Set spawn point to the first path point
+            transform.position = waypoints[0].position;
+            Debug.Log("spawn point" + transform.position);
         }
         else
         {
-            Debug.LogError("No path points available to set the spawn point.");
+            Debug.LogError("No waypoints available to set the spawn point.");
+        }
+    }
+    private void SetWaypoints()
+    {
+        waypoints = new List<Transform>();
+        foreach (int index in pathPointsIndices)
+        {
+            GameObject waypoint = GameObject.Find($"WayPoint_{index}");
+            if (waypoint != null)
+            {
+                waypoints.Add(waypoint.transform);
+            }
+            else
+            {
+                Debug.LogWarning($"Waypoint {index} not found in scene.");
+            }
         }
     }
 
     private IEnumerator FollowPath()
-
     {
-        if (pathPoints == null || pathPoints.Count == 0)
+        if (waypoints == null || waypoints.Count == 0)
         {
-            Debug.LogError("No path points available.");
+            Debug.LogError("No waypoints available.");
             yield break;
         }
 
-        while (currentPointIndex < pathPoints.Count)
+        while (currentPointIndex < waypoints.Count)
         {
-            Vector3 targetPosition = pathPoints[currentPointIndex];
-            if (targetPosition.x < transform.position.x) {
-                 spriteRenderer.flipX = false;
-            } else {
-                spriteRenderer.flipX = true;
-            }
-            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+            Transform targetWaypoint = waypoints[currentPointIndex];
+            Vector3 targetPosition = targetWaypoint.position;
+            Debug.Log("position now" + transform.position);
+            Debug.Log("target position" + targetPosition);
+            while (Vector3.Distance(transform.position , targetPosition) > 0.1f)
             {
+                Debug.Log("thoa dieu kien");
                 if (soldier) yield break;
 
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position , targetPosition, speed * Time.deltaTime);
                 yield return null;
             }
 
@@ -143,17 +183,18 @@ public class Enemy : MonoBehaviour
         Destroy(this.gameObject);
         GameManager.ModifyPlayerHealth(-1);
     }
-    private void OnDestroy() {
-        Vector3 position = transform.position;
+    private void OnDestroy()
+    {
+        Vector3 position = transform.position ;
         Destroy(gameObject);
-        
+
         if (goldPrefab != null)
         {
             GameObject coin = Instantiate(goldPrefab, position, Quaternion.identity);
             Destroy(coin, 2f);
         }
         GameManager.ModifyGold(5);
-        
+
 
     }
 }
