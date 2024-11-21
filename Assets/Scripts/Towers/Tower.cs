@@ -40,7 +40,6 @@
 
         private void SetButtonsActive(bool active)
         {
-        
             ScopeArea.SetActive(active);
             // buttons showed when status = 0
             buyArcherBtn.SetActive(active && status == 0);
