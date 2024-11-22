@@ -523,11 +523,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2e8fd49f5e88f1244a4fd685f3fa4073, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.96
+      value: -9.097109
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2e8fd49f5e88f1244a4fd685f3fa4073, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.19
+      value: -4.992448
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2e8fd49f5e88f1244a4fd685f3fa4073, type: 3}
       propertyPath: m_LocalPosition.z
@@ -600,8 +600,8 @@ MonoBehaviour:
   health: 100
   atk: 10
   speed: 2
-  pathFileName: path1.json
-  pathPoints: []
+  pathFileName: path3.json
+  pathPointsIndices: 
   goldPrefab: {fileID: 3321611934510342374, guid: 021922b509d6e454bb4225f002ceca83, type: 3}
 --- !u!58 &7424847838808309728
 CircleCollider2D:

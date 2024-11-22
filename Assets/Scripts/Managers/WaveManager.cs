@@ -29,8 +29,8 @@ public class WaveManager : MonoBehaviour
         Debug.Log($"Spawn interval: {spawnInterval} seconds"); 
         for (int i = 0; i < waveSize; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab);
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
+            GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+            Enemy enemyScript = enemy.GetComponent<Enemy>();    
 
             // Set enemy name based on wave and spawn number
             enemyScript.enemyName = $"Enemy {i + 1} in Wave {currentWave}";
