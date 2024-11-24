@@ -5,8 +5,7 @@ public class ShootEnemy : MonoBehaviour {
   public List<GameObject> enemiesInRange;
   private float lastShotTime;
   private ShootingTower tower;
-  void Shoot(Collider2D target)
-{
+  void Shoot(Collider2D target) {
   GameObject bulletPrefab = tower.bullet;
   Vector3 startPosition = gameObject.transform.position;
   Vector3 targetPosition = target.transform.position;
@@ -19,7 +18,6 @@ public class ShootEnemy : MonoBehaviour {
   bulletComp.target = target.gameObject.GetComponent<Enemy>();
   bulletComp.startPosition = startPosition;
   bulletComp.targetPosition = targetPosition;
-
 }
 
   private void Start() {
@@ -43,21 +41,15 @@ public class ShootEnemy : MonoBehaviour {
         Shoot(target.GetComponent<Collider2D>());
         lastShotTime = Time.time;
       }
-      Vector3 direction = gameObject.transform.position - target.transform.position;
-      gameObject.transform.rotation = Quaternion.AngleAxis(
-          Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI,
-          new Vector3(0, 0, 1));
     }
     
   }
 
-  void OnEnemyDestroy(GameObject enemy)
-  {
+  void OnEnemyDestroy(GameObject enemy) {
     enemiesInRange.Remove (enemy);
   }
 
-  void OnTriggerEnter2D (Collider2D range)
-  {
+  void OnTriggerEnter2D (Collider2D range) {
     if (range.gameObject.tag.Equals("enemy"))
     {
       enemiesInRange.Add(range.gameObject);
