@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using System;  
 
 public class GameManager : MonoBehaviour
 {
@@ -9,11 +10,15 @@ public class GameManager : MonoBehaviour
 
     public WaveManager waveManager;
     public GameObject startWaveBtn;
+    public GameObject VictoryFrame;
+    public GameObject DefeatFrame;
 
     public TextMeshProUGUI healthText; 
     public TextMeshProUGUI goldText; 
+
     private int playerHealth = 15;
     private int gold = 100;
+    private bool isWaveFinished = false;
 
     
     private void Awake()
@@ -25,7 +30,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this; 
-            DontDestroyOnLoad(gameObject); 
         }
     }
 
@@ -36,8 +40,38 @@ public class GameManager : MonoBehaviour
         UpdateHealthText();
         UpdateGoldText();
         startWaveBtn.SetActive(true);
+        VictoryFrame.SetActive(false);
+        DefeatFrame.SetActive(false);
     }
+    public void Update()
+    {
+        if (waveManager.IsWaveFinished)
+        {
+            isWaveFinished = true;
+        }
 
+        if (waveManager.noMoreWaves && isWaveFinished)
+        {
+            if (playerHealth <= 0)
+            {
+                Defeat();
+            }
+            else
+            {
+                Enemy[] enemies = FindObjectsOfType<Enemy>();
+                if (enemies.Length == 0)
+                {
+                    Victory();
+                }
+            }
+        }
+
+        if (!waveManager.IsWaveFinished && !waveManager.noMoreWaves)
+        {
+            startWaveBtn.SetActive(true);
+        }
+    }
+    
     public void UpdateHealthText()
     {
         healthText.text = playerHealth.ToString();
@@ -54,6 +88,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null)
         {
             Instance.playerHealth += amount;
+            Instance.playerHealth = Math.Max(Instance.playerHealth, 0);
             Instance.UpdateHealthText();
         }
     }
@@ -71,18 +106,19 @@ public class GameManager : MonoBehaviour
     {
         waveManager.StartWave();
         startWaveBtn.SetActive(false);
-        StartCoroutine(WaitForWaveEnd());
     }
-
-    private IEnumerator WaitForWaveEnd()
+    public static void Defeat()
     {
-        yield return new WaitUntil(() => waveManager.IsWaveFinished);
-        if (waveManager.noMoreWaves) yield break;
-        startWaveBtn.SetActive(true);
+        if (Instance != null)
+        {
+            Instance.DefeatFrame.SetActive(true);
+        }
+        
     }
-
-    static public void OnGameOver()
-    {
-        Debug.Log("Game Over");
+    public static void Victory() {
+        if (Instance != null)
+        {
+            Instance.VictoryFrame.SetActive(true);
+        }
     }
 }

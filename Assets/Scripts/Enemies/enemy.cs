@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public int health = 100;
     public int atk = 10;
     public float speed = 2.0F;
-    public string pathFileName = "path3.json";
+    public int pathIndex = 1;
     public List<int> pathPointsIndices;
     public GameObject goldPrefab;
     private GameObject background;
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
             Debug.LogError("bone_006 not found!");
             return;
         }
-        LoadPath();
+       
         SetWaypoints();
         SetSpawnPoint();
         StartMoving();
@@ -108,23 +108,7 @@ public class Enemy : MonoBehaviour
         followPathCoroutine = StartCoroutine(FollowPath());
     }
 
-    private void LoadPath()
-    {
-        string fullPath = Path.Combine(Application.dataPath, "Data/Paths", pathFileName);
-
-        if (File.Exists(fullPath))
-        {
-            string json = File.ReadAllText(fullPath);
-            PathData pathData = JsonUtility.FromJson<PathData>(json); 
-            pathPointsIndices = pathData.points; 
-        }
-        else
-        {
-            Debug.LogError($"Path file not found for {enemyName}: {fullPath}");
-        }
-    }
-
-
+    
     private void SetSpawnPoint()
     {
         if (waypoints != null && waypoints.Count > 0)
@@ -140,17 +124,21 @@ public class Enemy : MonoBehaviour
     private void SetWaypoints()
     {
         waypoints = new List<Transform>();
-        foreach (int index in pathPointsIndices)
+        GameObject waypointsParent = GameObject.Find($"WayPoints_{pathIndex}");
+        if (waypointsParent == null)
         {
-            GameObject waypoint = GameObject.Find($"WayPoint_{index}");
-            if (waypoint != null)
-            {
-                waypoints.Add(waypoint.transform);
-            }
-            else
-            {
-                Debug.LogWarning($"Waypoint {index} not found in scene.");
-            }
+            Debug.LogError($"WayPoints_{pathIndex} not found in the scene!");
+            return;
+        }
+
+        foreach (Transform child in waypointsParent.transform)
+        {
+            waypoints.Add(child);
+            Debug.Log($"Waypoint: {child.name}, Position: {child.position}");
+        }
+        if (waypoints.Count == 0)
+        {
+            Debug.LogError($"No Waypoint_{pathIndex} children found!");
         }
     }
 
