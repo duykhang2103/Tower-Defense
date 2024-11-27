@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
         if (waveManager.noMoreWaves && isWaveFinished)
         {
+            startWaveBtn.SetActive(false);
             if (playerHealth <= 0)
             {
                 Defeat();
