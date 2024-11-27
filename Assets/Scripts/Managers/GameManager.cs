@@ -7,7 +7,7 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; } //singleton
-
+    private string gameStageStr = "Stage_1";
     public WaveManager waveManager;
     public GameObject startWaveBtn;
     public GameObject VictoryFrame;
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
         if (waveManager.noMoreWaves && isWaveFinished)
         {
+            startWaveBtn.SetActive(false);
             if (playerHealth <= 0)
             {
                 Defeat();
@@ -112,6 +113,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null)
         {
             Instance.DefeatFrame.SetActive(true);
+            PlayerPrefs.SetInt(Instance.gameStageStr, Instance.playerHealth);
         }
         
     }
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null)
         {
             Instance.VictoryFrame.SetActive(true);
+            PlayerPrefs.SetInt(Instance.gameStageStr, Instance.playerHealth);
         }
     }
 }
