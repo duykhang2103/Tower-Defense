@@ -8,14 +8,15 @@ public class Enemy : MonoBehaviour
 {
 
     public string enemyName;
-    public int maxHealth = 100;
-    public int health = 100;
-    public int atk = 10;
-    public float speed = 2.0F;
+    [HideInInspector] public int maxHealth = 100;
+    [HideInInspector] public int health = 100;
+    [HideInInspector] public int atk = 10;
+    [HideInInspector] public float speed = 2.0F;
     public int pathIndex = 1;
     public List<int> pathPointsIndices;
     public GameObject goldPrefab;
     private GameObject background;
+    private Attribute attributes; 
 
 
 
@@ -28,32 +29,32 @@ public class Enemy : MonoBehaviour
     // private SpriteRenderer spriteRenderer;
     private int currentPointIndex = 0;
     private List<Transform> waypoints;
-    private Transform bone;
 
 
 
     public void Start()
     {
+        attributes = GetComponent<Attribute>();
+        if (attributes == null) {
+            Debug.Log("attributes not found");
+            return;
+        }
+        maxHealth = health = attributes.maxHealth;
+        speed = attributes.speed;
+        atk = attributes.atk;
         background = GameObject.Find("Background");
         if (!background)
         {
             Debug.LogError("Background object not found!");
             return;
         }
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         // spriteRenderer = GetComponent<SpriteRenderer>();
         healthBar = GetComponentInChildren<Slider>();
         if (healthBar)
         {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
-        }
-
-        bone = transform.Find("bone_006");
-        if (bone == null)
-        {
-            Debug.LogError("bone_006 not found!");
-            return;
         }
        
         SetWaypoints();
