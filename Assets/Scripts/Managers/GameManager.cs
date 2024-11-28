@@ -7,11 +7,12 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; } //singleton
-    private string gameStageStr = "Stage_1";
+    public string gameStageStr = "Stage_1";
     public WaveManager waveManager;
     public GameObject startWaveBtn;
     public GameObject VictoryFrame;
     public GameObject DefeatFrame;
+    public GameObject AchievementBoard;
 
     public TextMeshProUGUI healthText; 
     public TextMeshProUGUI goldText; 
@@ -123,5 +124,15 @@ public class GameManager : MonoBehaviour
             Instance.VictoryFrame.SetActive(true);
             PlayerPrefs.SetInt(Instance.gameStageStr, Instance.playerHealth);
         }
+    }
+
+    public void onAchievementButtonClicked()
+    {
+        AchievementBoard.SetActive(true);
+    }
+
+    public void OnExitButtonClicked()
+    {
+        Instance.AchievementBoard.SetActive(false);
     }
 }
