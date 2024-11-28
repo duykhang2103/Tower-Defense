@@ -12,6 +12,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 1938801354816382143, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 116.35634
+      objectReference: {fileID: 0}
+    - target: {fileID: 2543968855349410182, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -25.513474
+      objectReference: {fileID: 0}
+    - target: {fileID: 5285536394089109165, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 1.3154755
+      objectReference: {fileID: 0}
+    - target: {fileID: 6259753214817459570, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 10.691629
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394206835145567150, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 9.704803
+      objectReference: {fileID: 0}
     - target: {fileID: 8669628740423640183, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.3
@@ -63,8 +83,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 946580693763307613, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2737128396464485053}
   m_SourcePrefab: {fileID: 100100000, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+--- !u!1 &2668417316449213622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 946580693763307613, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}
+  m_PrefabInstance: {fileID: 2894391007992210667}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2737128396464485053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668417316449213622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe588572459c344089b0921d30c14a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5799022437756698780 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8669628740423640183, guid: eebb0d04dc3094f078082af4ab2bbd77, type: 3}

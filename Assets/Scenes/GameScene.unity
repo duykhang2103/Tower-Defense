@@ -2398,7 +2398,7 @@ MonoBehaviour:
   monsters:
   - monsterIds: 010000000100000002000000
   - monsterIds: 0100000001000000010000000200000002000000
-  - monsterIds: 0200000002000000020000000500000005000000
+  - monsterIds: 0200000002000000020000000400000004000000
   spawnInterval: 0.5
   numWaves: 2
 --- !u!4 &956894679
@@ -4674,50 +4674,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3880041310375725338, guid: 4b2edc2731dd94d7d9271d163c8b13c2, type: 3}
   m_PrefabInstance: {fileID: 4171496515190445126}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2023866387
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2023866389}
-  - component: {fileID: 2023866388}
-  m_Layer: 0
-  m_Name: ClickedDetector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2023866388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023866387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 432a16bddd9c1476bafc54d8f194e916, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2023866389
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023866387}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.034039, y: 1.9184314, z: -2.8404496}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2035522000
 GameObject:
   m_ObjectHideFlags: 0
@@ -5170,6 +5126,5 @@ SceneRoots:
   - {fileID: 1749797330}
   - {fileID: 2098626522}
   - {fileID: 956894679}
-  - {fileID: 2023866389}
   - {fileID: 5294508603034625509}
   - {fileID: 1610298956}

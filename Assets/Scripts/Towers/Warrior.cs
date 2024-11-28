@@ -3,66 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Warrior : Soldier {
+    private Vector3 targetPosition;
+    private bool isAttacking = false;
+
     public override void Start() {
         base.Start();
         GameManager.ModifyGold(-10);
+        isMoving = false;
+        isAttacking = false;
     }
+    public override void Update() {
+        if (enemy) {
+            if (!isAttacking) MoveWarriorToPosition (targetPosition);
+        }
+        base.Update();
+    }
+
     public override void Attack() {
-        if (enemy != null) 
-        {
-            Vector3 oppositePositionWithEnemy = enemy.transform.position + Vector3.left; 
-            StartCoroutine(MoveWarriorToPosition(oppositePositionWithEnemy));
-            FightWithEnemy();
-            enemy.FightWithSoldier();
-        }
-      
-    }
-    private void FightWithEnemy() {
-        animator.SetBool("fight", true);
-        StartCoroutine(ApplyDamageToEnemy());
-    }
-    private IEnumerator ApplyDamageToEnemy()
-    {
-        Debug.Log("ApllyDamageToEnemy run");
-        while (enemy != null && health > 0)
-        {
-            
-            yield return new WaitForSeconds(1f); 
-            if (enemy != null) {
-                enemy.TakeDamage(atk);
-                Debug.Log($"soldier attacks enemy for {atk} damage!");
-                if (enemy && enemy.health <= 0)
-                {
-                    animator.SetBool("fight", false);
-                    enemy = null;
-                    LetMoveSoldier(lastPosition);
-                    yield break;
-                }
-                else if (!enemy) {
-                    animator.SetBool("fight", false);
-                    LetMoveSoldier(lastPosition);
-                }
-            }
+        if (enemy != null && enemy.soldier == null) {
+            isAttacking = false;
+            Debug.Log("warrior attack");
+            Vector3 oppositePositionWithEnemy = enemy.transform.position + Vector3.left;
+            targetPosition = oppositePositionWithEnemy;
+            enemy.Attack(this);
         }
     }
-    private IEnumerator MoveWarriorToPosition(Vector3 targetPosition) 
-    {
-        animator.SetBool("run", true); 
-        while (Vector3.Distance(transform.position, targetPosition) > 0.1f) 
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 15.0f * Time.deltaTime); 
-            yield return null; 
+
+
+    private void ApplyDamageToEnemy() {
+        if (enemy != null) {
+            enemy.TakeDamage(atk);
         }
-        animator.SetBool("run", false);
+        else {
+            animator.SetBool("fight", false);
+            Debug.Log("no enemy");
+            FindEnemyInRange();
+        }
     }
-    public override void TakeDamage(int damage)
-    {
+
+    public override void TakeDamage(int damage) {
         Debug.Log("warrior take " + damage + " damage");
         health -= damage;
         UpdateHealthBar();
-        if (health <= 0)
-        {
+        if (health <= 0) {
             Destroy(gameObject);
+        }
+    }
+
+    
+
+    private void MoveWarriorToPosition(Vector3 targetPosition) {
+        if (Vector3.Distance(transform.position, targetPosition) > 0.1f) {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 15.0f * Time.deltaTime);
+            animator.SetBool("run", true);
+        } else {
+            animator.SetBool("run", false);
+            animator.SetBool("fight", true);
+            isAttacking = true;
         }
     }
 }
