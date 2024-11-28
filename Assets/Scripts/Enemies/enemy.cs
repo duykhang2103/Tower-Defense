@@ -101,7 +101,6 @@ public class Enemy : MonoBehaviour
 
         if (currentPointIndex < waypoints.Count)
         {
-            
             Transform targetWaypoint = waypoints[currentPointIndex];
             Vector3 targetPosition = targetWaypoint.position;
             if (transform.position.x < targetPosition.x) {
