@@ -58,10 +58,12 @@ public class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
+
         if (soldier != null)
         {
-            Debug.Log("enemy fight ");
+            Debug.Log("enemy fight");
             animator.SetBool("fight", true);
+            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
         }
         if (soldier == null || soldier.health <= 0)
         {
@@ -99,9 +101,16 @@ public class Enemy : MonoBehaviour
 
         if (currentPointIndex < waypoints.Count)
         {
+            
             Transform targetWaypoint = waypoints[currentPointIndex];
             Vector3 targetPosition = targetWaypoint.position;
-
+            if (transform.position.x < targetPosition.x) {
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            }
+            else {
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            }
+            
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)

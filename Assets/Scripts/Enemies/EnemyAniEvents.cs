@@ -22,7 +22,6 @@ public class EnemyAniEvents : MonoBehaviour
             soldier.TakeDamage(enemy.atk);
         }
         else {
-            // Debug.Log("khono thay soldier hoajc soldier it mau hon 0");
             soldier = null;
             animator.SetBool("fight", false);
         }
