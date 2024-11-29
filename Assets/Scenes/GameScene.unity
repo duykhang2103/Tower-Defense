@@ -1258,11 +1258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matteColor: {r: 0, g: 0, b: 0, a: 1}
-  referenceMode: 0
+  referenceMode: 1
   x: 9
   y: 16
-  width: 960
-  height: 540
+  width: 720
+  height: 1280
   onAwake: 1
   onUpdate: 1
 --- !u!1 &543834653
@@ -4787,10 +4787,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c340238e40c490e8ee21477838a443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStageStr: Stage_1
   waveManager: {fileID: 956894678}
   startWaveBtn: {fileID: 877962588}
   VictoryFrame: {fileID: 1385102024}
   DefeatFrame: {fileID: 1058986758}
+  AchievementBoard: {fileID: 0}
   healthText: {fileID: 1128279943}
   goldText: {fileID: 1160618997}
 --- !u!4 &2098626522

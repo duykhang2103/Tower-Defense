@@ -23,10 +23,6 @@ public class Enemy : MonoBehaviour
     private int currentPointIndex = 0;
     private List<Transform> waypoints;
 
-
-    private float attackCooldown = 1f;
-    private float attackTimer = 0f;
-
     public void Start()
     {
         attributes = GetComponent<Attribute>();

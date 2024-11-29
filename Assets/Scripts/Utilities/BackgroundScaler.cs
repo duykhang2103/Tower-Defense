@@ -20,24 +20,25 @@ public class BackgroundScaler : MonoBehaviour
             return;
         }
 
-       // Kích thước ảnh background (pixel)
-        float backgroundWidthPixels = 2048f;
-        float backgroundHeightPixels = 2048f;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null || spriteRenderer.sprite == null)
+        {
+            Debug.LogError("no sprite!");
+            return;
+        }
+        float backgroundWPixels = spriteRenderer.sprite.texture.width;
+        float backgroundHPixels = spriteRenderer.sprite.texture.height;
 
-        // Lấy kích thước viewport của camera dựa trên pixel
-        float cameraHeightUnits = mainCamera.orthographicSize * 2f; // Chiều cao camera tính bằng đơn vị Unity
-        float cameraWidthUnits = cameraHeightUnits * mainCamera.aspect; // Chiều rộng camera tính bằng đơn vị Unity
 
-        // Số pixel tương ứng với 1 đơn vị Unity
-        float pixelsPerUnit = GetComponent<SpriteRenderer>().sprite.pixelsPerUnit;
+        float HUnits = mainCamera.orthographicSize * 2f; 
+        float WUnits = HUnits * mainCamera.aspect; 
+        float pixPerUnit = GetComponent<SpriteRenderer>().sprite.pixelsPerUnit;
 
-        // Quy đổi viewport của camera từ đơn vị Unity sang pixel
-        float cameraWidthPixels = cameraWidthUnits * pixelsPerUnit;
-        float cameraHeightPixels = cameraHeightUnits * pixelsPerUnit;
+        float WPix = WUnits * pixPerUnit;
+        float HPix = HUnits * pixPerUnit;
 
-        // Tính scale để khớp background với camera
-        float scaleX = cameraWidthPixels / backgroundWidthPixels;
-        float scaleY = cameraHeightPixels / backgroundHeightPixels;
+        float scaleX = WPix / backgroundWPixels;
+        float scaleY = HPix / backgroundHPixels;
 
 
         transform.localScale = new Vector3(scaleX, scaleY, 1f);

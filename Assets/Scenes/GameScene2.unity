@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matteColor: {r: 0, g: 0, b: 0, a: 1}
-  referenceMode: 0
+  referenceMode: 1
   x: 9
   y: 16
   width: 960
@@ -2137,6 +2137,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1479934951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1479934953}
+  - component: {fileID: 1479934952}
+  m_Layer: 0
+  m_Name: GameManagerUIObj
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1479934952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479934951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6e339a748fe4eeb8ad04cfd0fe1ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1479934953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479934951}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.6868377, y: -2.5599468, z: -4.239081}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1518038660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,9 +3191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed03c6ece0e84ee18d853b51ab31bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3279257783067444896, guid: f812ed0bba7be49d4bac131751ca4aae, type: 3}
+  monsters: []
   spawnInterval: 0.5
-  waveSize: 2
   numWaves: 10
 --- !u!114 &6592819182596009547
 MonoBehaviour:
@@ -3196,10 +3239,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c340238e40c490e8ee21477838a443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStageStr: Stage_1
   waveManager: {fileID: 6243893346537282562}
   startWaveBtn: {fileID: 877962588}
   VictoryFrame: {fileID: 0}
   DefeatFrame: {fileID: 0}
+  AchievementBoard: {fileID: 0}
   healthText: {fileID: 1128279943}
   goldText: {fileID: 1160618997}
 --- !u!114 &8101019564403194022
@@ -3238,3 +3283,4 @@ SceneRoots:
   - {fileID: 1524096031}
   - {fileID: 111527345}
   - {fileID: 1289014878}
+  - {fileID: 1479934953}
