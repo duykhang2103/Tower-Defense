@@ -13,6 +13,7 @@ public class HomeScene : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("Diamond", 10);
+        PlayerPrefs.SetInt("Skills", 3);
         SceneManager.LoadScene("MapScene");
     }
     public void Continue()
