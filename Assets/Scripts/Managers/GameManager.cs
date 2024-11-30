@@ -2,18 +2,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using System;  
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; } //singleton
-
+    public string gameStageStr = "Stage_1";
     public WaveManager waveManager;
-    public GameObject startWaveBtn;
+    public GameObject VictoryFrame;
+    public GameObject DefeatFrame;
+    public GameObject AchievementBoard;
 
     public TextMeshProUGUI healthText; 
     public TextMeshProUGUI goldText; 
-    private int playerHealth = 15;
-    private int gold = 100;
+
+    public int playerHealth = 15;
+    public int gold = 100;
+    private bool isWaveFinished = false;
 
     
     private void Awake()
@@ -25,7 +30,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this; 
-            DontDestroyOnLoad(gameObject); 
         }
     }
 
@@ -35,9 +39,33 @@ public class GameManager : MonoBehaviour
         gold = 100;
         UpdateHealthText();
         UpdateGoldText();
-        startWaveBtn.SetActive(true);
+        VictoryFrame.SetActive(false);
+        DefeatFrame.SetActive(false);
     }
+    public void Update()
+    {
+        if (waveManager.IsWaveFinished)
+        {
+            isWaveFinished = true;
+        }
 
+        if (waveManager.noMoreWaves && isWaveFinished)
+        {
+            if (playerHealth <= 0)
+            {
+                Defeat();
+            }
+            else
+            {
+                Enemy[] enemies = FindObjectsOfType<Enemy>();
+                if (enemies.Length == 0)
+                {
+                    Victory();
+                }
+            }
+        }
+    }
+    
     public void UpdateHealthText()
     {
         healthText.text = playerHealth.ToString();
@@ -54,6 +82,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null)
         {
             Instance.playerHealth += amount;
+            Instance.playerHealth = Math.Max(Instance.playerHealth, 0);
             Instance.UpdateHealthText();
         }
     }
@@ -67,22 +96,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnStartWaveButtonClicked()
+    public static void Defeat()
     {
-        waveManager.StartWave();
-        startWaveBtn.SetActive(false);
-        StartCoroutine(WaitForWaveEnd());
+        if (Instance != null)
+        {
+            Instance.DefeatFrame.SetActive(true);
+            PlayerPrefs.SetInt(Instance.gameStageStr, Instance.playerHealth);
+        }
+        
+    }
+    public static void Victory() {
+        if (Instance != null)
+        {
+            Instance.VictoryFrame.SetActive(true);
+            PlayerPrefs.SetInt(Instance.gameStageStr, Instance.playerHealth);
+        }
     }
 
-    private IEnumerator WaitForWaveEnd()
+    public void onAchievementButtonClicked()
     {
-        yield return new WaitUntil(() => waveManager.IsWaveFinished);
-        if (waveManager.noMoreWaves) yield break;
-        startWaveBtn.SetActive(true);
+        AchievementBoard.SetActive(true);
     }
 
-    static public void OnGameOver()
+    public void OnExitButtonClicked()
     {
-        Debug.Log("Game Over");
+        Instance.AchievementBoard.SetActive(false);
     }
 }

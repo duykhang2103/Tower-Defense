@@ -2,121 +2,118 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Soldier : MonoBehaviour
 {
-
-    private bool isFocused;
     private Tower tower;
-    private Coroutine moveCoroutine;
-    private CircleCollider2D detectionRange;
-
+    protected Range range; 
     private Slider healthBar;
     protected Animator animator;
-    protected Enemy enemy;
+    public Enemy enemy;
     public int health = 150;
     public int maxHealth = 150;
     public int atk = 25;
 
     protected Vector3 lastPosition;
-
+    public bool isMoving;
 
     public virtual void Start()
     {
-        moveCoroutine = null;
-        isFocused = false;
-        detectionRange = GetComponent<CircleCollider2D>();
+        range = transform.Find("Range").gameObject.GetComponent<Range>(); 
         animator = GetComponent<Animator>();
         healthBar = GetComponentInChildren<Slider>();
+
         if (healthBar)
         {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
         }
+        isMoving = false;
     }
-    void Update()
-    {
 
-        if (!enemy && Input.GetMouseButtonDown(0) && isFocused) // move soldier
+    public virtual void Update()
+    {
+        if (enemy == null)
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 mouseMousePos = tower.transform.InverseTransformPoint(mousePos);
-            mouseMousePos.z = -1;
-            if (isMoveInRangeTower(mouseMousePos))
+            animator.SetBool("fight", false);
+            MoveSoldier(lastPosition);
+        }
+        if (tower && tower.isFocused && Input.GetMouseButtonDown(0)) 
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = tower.transform.position.z; 
+
+
+            
+            Debug.Log("soldierPos" + transform.position);
+            if (isMoveInRangeTower(mousePosition))
             {
-                lastPosition = mouseMousePos;
-                LetMoveSoldier(lastPosition);
+                {
+                    Debug.Log("MOVE");
+                    lastPosition = mousePosition;
+                    LetMoveSoldier(lastPosition);
+                }
             }
         }
+        
+       
     }
-    protected void LetMoveSoldier(Vector3 mouseMousePos)
-    {
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
 
-        moveCoroutine = StartCoroutine(MoveSoldier(mouseMousePos));
-    }
-    private void OnTriggerEnter2D(Collider2D other)
+    protected void LetMoveSoldier(Vector3 targetPosition)
     {
-        // if enemy in range 
-        if (enemy == null && other.tag == "enemy")
+        lastPosition = targetPosition;
+        isMoving = true;
+    }
+
+    private void MoveSoldier(Vector3 targetPosition)
+    {
+        if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
-            enemy = other.GetComponent<Enemy>();
-            if (enemy.isTargeted()) return;
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 5.0f * Time.deltaTime);
+            animator.SetBool("run", true);
+        }
+        else
+        {
+            animator.SetBool("run", false);
+            isMoving = false; 
+        }
+    }
+
+    public void FindEnemyInRange() {
+
+        if (enemy != null && !range.IsContainEnemy(enemy)) enemy = null;
+        if (enemy == null && range.Get1Enemy() != null) {
+            enemy = range.Get1Enemy();
             Attack();
-            if (this is Warrior)
-            {
-                enemy.Attack(this);
-            }
         }
     }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        // if enemy is out of range
-        if (enemy != null && other.gameObject == enemy.gameObject)
-        {
-            Debug.Log("enemy is out of range1");
-            enemy = null;
-        }
-    }
+
     private bool isMoveInRangeTower(Vector3 position)
     {
         Vector3 center = tower.ScopeArea.transform.localPosition;
         CircleCollider2D range = tower.ScopeArea.GetComponent<CircleCollider2D>();
-
+        Vector3 localPosition = tower.transform.InverseTransformPoint(position);
+        
         float localRadius = range.radius * tower.ScopeArea.transform.localScale.x;
+        return Vector3.Distance(localPosition, center) <= localRadius;
+    }
 
-        return Vector3.Distance(position, center) <= localRadius;
-    }
-    private IEnumerator MoveSoldier(Vector3 targetPosition)
-    {
 
-        animator.SetBool("run", true);
-        while (Vector3.Distance(transform.localPosition, targetPosition) > 0.1f)
-        {
-            if (enemy) yield break;
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, 5.0f * Time.deltaTime);
-            yield return null;
-        }
-        animator.SetBool("run", false);
-    }
-    private void OnMouseDown()
-    {
-        isFocused = !isFocused;
-    }
     public void SetTower(Tower _tower)
     {
         tower = _tower;
     }
+
     virtual public void Attack()
     {
         // Debug.Log("Soldier attacks");
     }
+
     virtual public void TakeDamage(int damage)
     {
-        // Debug.og("soldier take damage from enemy");
+        // Debug.Log("soldier takes damage from enemy");
     }
+
     public void UpdateHealthBar()
     {
         if (healthBar != null)
@@ -126,8 +123,10 @@ public class Soldier : MonoBehaviour
             {
                 healthBar.gameObject.SetActive(false);
             }
-            else healthBar.gameObject.SetActive(true);
+            else
+            {
+                healthBar.gameObject.SetActive(true);
+            }
         }
     }
-
 }

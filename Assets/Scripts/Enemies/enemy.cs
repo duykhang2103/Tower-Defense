@@ -1,159 +1,189 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-
-    public string enemyName;        
-    public int maxHealth = 100; 
-    public int health = 100;
-    public int atk = 10;
-    public float speed;               
-    public string pathFileName;          
-    public List<Vector3> pathPoints;
+    public string enemyName;
+    [HideInInspector] public int maxHealth = 100;
+    [HideInInspector] public int health = 100;
+    [HideInInspector] public int atk = 10;
+    [HideInInspector] public float speed = 2.0F;
+    public int pathIndex = 1;
+    public List<int> pathPointsIndices;
     public GameObject goldPrefab;
-
+    private GameObject background;
+    private Attribute attributes;
 
     protected Animator animator;
-
-    protected Soldier soldier;
+    public Soldier soldier;
 
     private Slider healthBar;
-    private Coroutine followPathCoroutine;
-    private SpriteRenderer spriteRenderer;
     private int currentPointIndex = 0;
-    
+    private List<Transform> waypoints;
 
-    
     public void Start()
     {
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        attributes = GetComponent<Attribute>();
+        if (attributes == null)
+        {
+            Debug.Log("attributes not found");
+            return;
+        }
+        maxHealth = health = attributes.maxHealth;
+        speed = attributes.speed;
+        atk = attributes.atk;
+        background = GameObject.Find("Background");
+        if (!background)
+        {
+            Debug.LogError("Background object not found!");
+            return;
+        }
+        animator = GetComponentInChildren<Animator>();
         healthBar = GetComponentInChildren<Slider>();
-        if (healthBar) {
+        if (healthBar)
+        {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
         }
-        
 
-        LoadPath();
+        SetWaypoints();
         SetSpawnPoint();
-        StartMoving();
-    }
-    void Update()
-    {
-        
-    }
-    public bool isTargeted() {
-        return soldier != null;
     }
 
-    public void Attack(Soldier _soldier) {
-        spriteRenderer.flipX = true;
+    public virtual void Update()
+    {
+
+        if (soldier != null)
+        {
+            Debug.Log("enemy fight");
+            animator.SetBool("fight", true);
+            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+        }
+        if (soldier == null || soldier.health <= 0)
+        {
+            animator.SetBool("run", true);
+            animator.SetBool("fight", false);
+
+            soldier = null;
+            MoveAlongPath();
+        }
+    }
+    public void Attack(Soldier _soldier)
+    {
+        Debug.Log("enemy attack ");
         soldier = _soldier;
-        Debug.Log("enemy attack to soldier");
-        FightWithSoldier();
-        if (followPathCoroutine != null) {
-            StopCoroutine(followPathCoroutine);
-        }
-        
-    }
-    virtual public void FightWithSoldier() {
-    //    animator.SetBool("fight", true);
-    }
-    virtual public void TakeDamage(int damage) {
-        // Debug.Log("enemy take damage from soldier");
-    }
-    public void UpdateHealthBar() {
-        if (healthBar != null)
-        {
-            healthBar.value = health; 
-            if (healthBar.value == healthBar.maxValue) {
-                healthBar.gameObject.SetActive(false);
-            }
-            else healthBar.gameObject.SetActive(true);
-        }
-       
-    }
-    protected void StartMoving()
-    {
-        animator.SetBool("run", true);
-        followPathCoroutine = StartCoroutine(FollowPath());
     }
 
-    private void LoadPath()
+    public void TakeDamage(int damage)
     {
-        string fullPath = Path.Combine(Application.dataPath, "Data/Paths", pathFileName);
-        
-        if (File.Exists(fullPath))
+        Debug.Log("Torch takes " + damage + " damage");
+        health -= damage;
+        UpdateHealthBar();
+        if (health <= 0)
         {
-            string json = File.ReadAllText(fullPath);
-            PathData pathData = JsonUtility.FromJson<PathData>(json);
-            pathPoints = pathData.points;
+            Destroy(this);
+        }
+    }
+
+    private void MoveAlongPath()
+    {
+        if (waypoints == null || waypoints.Count == 0)
+        {
+            Debug.LogError("No waypoints available.");
+            return;
+        }
+
+        if (currentPointIndex < waypoints.Count)
+        {
+            Transform targetWaypoint = waypoints[currentPointIndex];
+            Vector3 targetPosition = targetWaypoint.position;
+            if (transform.position.x < targetPosition.x) {
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            }
+            else {
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            }
+            
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            {
+                currentPointIndex++;
+            }
         }
         else
         {
-            Debug.LogError($"Path file not found for {enemyName}: {fullPath}");
+            Destroy(this.gameObject);
+            GameManager.ModifyPlayerHealth(-1);
+        }
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.value = health;
+            if (healthBar.value == healthBar.maxValue)
+            {
+                healthBar.gameObject.SetActive(false);
+            }
+            else healthBar.gameObject.SetActive(true);
         }
     }
 
     private void SetSpawnPoint()
     {
-        if (pathPoints != null && pathPoints.Count > 0)
+        if (waypoints != null && waypoints.Count > 0)
         {
-            transform.position = pathPoints[0]; // Set spawn point to the first path point
+            transform.position = waypoints[0].position;
         }
         else
         {
-            Debug.LogError("No path points available to set the spawn point.");
+            Debug.LogError("No waypoints available to set the spawn point.");
         }
     }
 
-    private IEnumerator FollowPath()
-
+    private void SetWaypoints()
     {
-        if (pathPoints == null || pathPoints.Count == 0)
+        waypoints = new List<Transform>();
+        GameObject waypointsParent = GameObject.Find($"WayPoints_{pathIndex}");
+        if (waypointsParent == null)
         {
-            Debug.LogError("No path points available.");
-            yield break;
+            Debug.LogError($"WayPoints_{pathIndex} not found in the scene!");
+            return;
         }
 
-        while (currentPointIndex < pathPoints.Count)
+        foreach (Transform child in waypointsParent.transform)
         {
-            Vector3 targetPosition = pathPoints[currentPointIndex];
-            if (targetPosition.x < transform.position.x) {
-                 spriteRenderer.flipX = false;
-            } else {
-                spriteRenderer.flipX = true;
-            }
-            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
-            {
-                if (soldier) yield break;
-
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                yield return null;
-            }
-
-            currentPointIndex++;
+            waypoints.Add(child);
         }
 
-        Destroy(this.gameObject);
-        GameManager.ModifyPlayerHealth(-1);
+        if (waypoints.Count == 0)
+        {
+            Debug.LogError($"No Waypoints found for pathIndex {pathIndex}");
+        }
     }
-    private void OnDestroy() {
+
+    private void OnDestroy()
+    {
         Vector3 position = transform.position;
+
+        if (soldier)
+        {
+            soldier.enemy = null;
+            soldier.FindEnemyInRange();
+        }
+
         Destroy(gameObject);
-        
+
         if (goldPrefab != null)
         {
             GameObject coin = Instantiate(goldPrefab, position, Quaternion.identity);
             Destroy(coin, 2f);
         }
-        GameManager.ModifyGold(5);
-        
 
+        GameManager.ModifyGold(5);
     }
 }

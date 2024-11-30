@@ -15,7 +15,7 @@
 
         private GameObject soldier;
        
-        private bool isFocused = false;
+        public bool isFocused = false;
         private int status = 0;
         private Coroutine moveCoroutine; 
 
@@ -35,12 +35,13 @@
         private void OnMouseDown()
         {
             isFocused = !isFocused;
+            if (isFocused) Debug.Log("focus");
+            else Debug.Log("not focus");
             SetButtonsActive(isFocused);
         }
 
         private void SetButtonsActive(bool active)
         {
-        
             ScopeArea.SetActive(active);
             // buttons showed when status = 0
             buyArcherBtn.SetActive(active && status == 0);
@@ -65,7 +66,7 @@
 
             if (prefabToInstantiate != null)
             {
-                soldier = Instantiate(prefabToInstantiate, transform.TransformPoint(new Vector3(0, -1, -1)), Quaternion.identity, transform);
+                soldier = Instantiate(prefabToInstantiate, transform.TransformPoint(new Vector3(0, -1, 0)), Quaternion.identity, transform);
                 soldier.GetComponent<Soldier>().SetTower(this);
             }
             yield return new WaitForSeconds(0.1f); 
