@@ -19,7 +19,7 @@ public class WaveManager : MonoBehaviour
     private int currentWave = 0;
     private int enemiesSpawned = 0;
     private bool isWaveFinished = true; 
-
+    public GameObject startWaveBtn;
     public bool IsWaveFinished => isWaveFinished;
     public bool noMoreWaves => (currentWave >= monsters.Count);  
 
@@ -31,11 +31,18 @@ public class WaveManager : MonoBehaviour
             Debug.LogError("MonsFactory component not found");
         }
     }
+    public void Update() {
+        if (noMoreWaves || !isWaveFinished) startWaveBtn.SetActive(false);
+        else {
+            startWaveBtn.SetActive(true);
+        }
+    }
 
     public void StartWave()
     {
         if (isWaveFinished) 
         {
+            
             isWaveFinished = false;
             StartCoroutine(SpawnWave());
         }

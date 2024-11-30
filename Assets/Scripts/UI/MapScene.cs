@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MapScene : MonoBehaviour
 {
     public void Start() {
+        Time.timeScale = 1f; 
         UpdateSetting();
     }
     public void LoadScene(string sceneName) {
@@ -22,12 +23,8 @@ public class MapScene : MonoBehaviour
             LetterBoxer letterBoxer = mainCamera.GetComponent<LetterBoxer>();
             if (letterBoxer != null)
             {
-                letterBoxer.width = PlayerPrefs.GetInt("WidthRes");
-                letterBoxer.height = PlayerPrefs.GetInt("HeightRes");
-                Debug.Log("width " + PlayerPrefs.GetInt("WidthRes"));
-                Debug.Log("height " + PlayerPrefs.GetInt("HeightRes"));
-                if (letterBoxer.width == 0) letterBoxer.width = 1080;
-                if (letterBoxer.height == 0) letterBoxer.height = 1920;
+                letterBoxer.width = PlayerPrefs.GetInt("WidthRes", 1080);
+                letterBoxer.height = PlayerPrefs.GetInt("HeightRes", 1920);
             }
             else {
                 Debug.Log("letter boxer not found");
@@ -38,8 +35,8 @@ public class MapScene : MonoBehaviour
         // AudioListener.volume = PlayerPrefs.GetFloat("Volume", 1f);
     }
     private void UpdateFPS() {
-        Application.targetFrameRate = PlayerPrefs.GetInt("FPS");
-        if (Application.targetFrameRate == 0)  Application.targetFrameRate = 30;
+        Application.targetFrameRate = PlayerPrefs.GetInt("FPS", 60);
+        
 
     }
 }

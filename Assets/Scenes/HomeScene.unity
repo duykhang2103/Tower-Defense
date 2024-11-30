@@ -417,8 +417,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1000}
-  m_SizeDelta: {x: -200, y: 300}
+  m_AnchoredPosition: {x: 0, y: -900}
+  m_SizeDelta: {x: -300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &120304698
 MonoBehaviour:
@@ -466,7 +466,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 228900334}
         m_TargetAssemblyTypeName: HomeScene, Assembly-CSharp
-        m_MethodName: LoadGameScene
+        m_MethodName: Continue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1352,8 +1352,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1800}
-  m_SizeDelta: {x: -200, y: 300}
+  m_AnchoredPosition: {x: 0, y: -1500}
+  m_SizeDelta: {x: -300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &525850518
 MonoBehaviour:
@@ -1398,7 +1398,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 525850519}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 228900334}
+        m_TargetAssemblyTypeName: HomeScene, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &525850519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1913,8 +1925,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1400}
-  m_SizeDelta: {x: -200, y: 300}
+  m_AnchoredPosition: {x: 0, y: -1200}
+  m_SizeDelta: {x: -300, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997649715
 MonoBehaviour:
@@ -1959,7 +1971,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 997649716}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 228900334}
+        m_TargetAssemblyTypeName: HomeScene, Assembly-CSharp
+        m_MethodName: NewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &997649716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2398,6 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 530c794dc2e594436a201f3e40bebb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneUIManager: {fileID: 228900333}
   resolutionDropdown: {fileID: 1780763767}
   fpsDropdown: {fileID: 1167320244}
   width: 1080
@@ -2816,17 +2841,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 228900334}
-        m_TargetAssemblyTypeName: HomeScene, Assembly-CSharp
-        m_MethodName: LoadSettings
-        m_Mode: 1
+      - m_Target: {fileID: 1222384922}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1595680776
 MonoBehaviour:
@@ -2937,7 +2962,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -400}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671167834
 MonoBehaviour:
@@ -2986,8 +3011,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
-  m_fontSizeBase: 200
+  m_fontSize: 150
+  m_fontSizeBase: 150
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4696,10 +4721,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1222384927}
-        m_TargetAssemblyTypeName: Settings, Assembly-CSharp
-        m_MethodName: Cancel
-        m_Mode: 1
+      - m_Target: {fileID: 1222384922}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

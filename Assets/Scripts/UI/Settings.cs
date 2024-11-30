@@ -11,11 +11,11 @@ public class Settings : MonoBehaviour
     public TMP_Dropdown fpsDropdown;
     public int width = 1080;
     public int height = 1920;
-    public int fps = 30;
+    public int fps = 60;
     public void Start() {
         width = PlayerPrefs.GetInt("WidthRes", 1080); 
         height = PlayerPrefs.GetInt("HeightRes", 1920);
-        fps = PlayerPrefs.GetInt("FPS", 30);
+        fps = PlayerPrefs.GetInt("FPS", 60);
 
         UpdateDropdown(resolutionDropdown, $"{width} x {height}");
         UpdateDropdown(fpsDropdown, fps.ToString());

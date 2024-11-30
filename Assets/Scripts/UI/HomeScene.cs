@@ -6,11 +6,13 @@ public class HomeScene : MonoBehaviour
 {
     public GameObject setting;
     public void Start() {
+        Time.timeScale = 1f; 
         UpdateSetting();
     }
     public void NewGame()
     {
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("Diamond", 10);
         SceneManager.LoadScene("MapScene");
     }
     public void Continue()
@@ -45,7 +47,7 @@ public class HomeScene : MonoBehaviour
         // AudioListener.volume = PlayerPrefs.GetFloat("Volume", 1f);
     }
     private void UpdateFPS() {
-        Application.targetFrameRate = PlayerPrefs.GetInt("FPS", 30);
+        Application.targetFrameRate = PlayerPrefs.GetInt("FPS", 60);
 
     }
 }

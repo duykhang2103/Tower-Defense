@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; } //singleton
     public string gameStageStr = "Stage_1";
     public WaveManager waveManager;
-    public GameObject startWaveBtn;
     public GameObject VictoryFrame;
     public GameObject DefeatFrame;
     public GameObject AchievementBoard;
@@ -17,8 +16,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI healthText; 
     public TextMeshProUGUI goldText; 
 
-    private int playerHealth = 15;
-    private int gold = 100;
+    public int playerHealth = 15;
+    public int gold = 100;
     private bool isWaveFinished = false;
 
     
@@ -40,7 +39,6 @@ public class GameManager : MonoBehaviour
         gold = 100;
         UpdateHealthText();
         UpdateGoldText();
-        startWaveBtn.SetActive(true);
         VictoryFrame.SetActive(false);
         DefeatFrame.SetActive(false);
     }
@@ -53,7 +51,6 @@ public class GameManager : MonoBehaviour
 
         if (waveManager.noMoreWaves && isWaveFinished)
         {
-            startWaveBtn.SetActive(false);
             if (playerHealth <= 0)
             {
                 Defeat();
@@ -66,11 +63,6 @@ public class GameManager : MonoBehaviour
                     Victory();
                 }
             }
-        }
-
-        if (!waveManager.IsWaveFinished && !waveManager.noMoreWaves)
-        {
-            startWaveBtn.SetActive(true);
         }
     }
     
@@ -104,11 +96,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnStartWaveButtonClicked()
-    {
-        waveManager.StartWave();
-        startWaveBtn.SetActive(false);
-    }
     public static void Defeat()
     {
         if (Instance != null)

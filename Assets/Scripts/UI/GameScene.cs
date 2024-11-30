@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameScene : MonoBehaviour
 {
     public void Start () {
+        Time.timeScale = 1f; 
         UpdateSetting();
     } 
     private void UpdateResolution() {
@@ -14,12 +15,10 @@ public class GameScene : MonoBehaviour
             LetterBoxer letterBoxer = mainCamera.GetComponent<LetterBoxer>();
             if (letterBoxer != null)
             {
-                letterBoxer.width = PlayerPrefs.GetInt("WidthRes");
-                letterBoxer.height = PlayerPrefs.GetInt("HeightRes");
+                letterBoxer.width = PlayerPrefs.GetInt("WidthRes", 1080);
+                letterBoxer.height = PlayerPrefs.GetInt("HeightRes", 1920);
                 Debug.Log("width " + PlayerPrefs.GetInt("WidthRes"));
                 Debug.Log("height " + PlayerPrefs.GetInt("HeightRes"));
-                if (letterBoxer.width == 0) letterBoxer.width = 1080;
-                if (letterBoxer.height == 0) letterBoxer.height = 1920;
             }
             else {
                 Debug.Log("letter boxer not found");
@@ -30,7 +29,7 @@ public class GameScene : MonoBehaviour
         // AudioListener.volume = PlayerPrefs.GetFloat("Volume", 1f);
     }
     private void UpdateFPS() {
-        Application.targetFrameRate = PlayerPrefs.GetInt("FPS");
+        Application.targetFrameRate = PlayerPrefs.GetInt("FPS", 60);
     }
     public void UpdateSetting() {
         UpdateResolution();
@@ -40,6 +39,13 @@ public class GameScene : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+    public void PauseGame() {
+        Time.timeScale = 0f;
+        
+    }
+    public void ResumeGame() {
+        Time.timeScale = 1f; 
     }
 }
 
