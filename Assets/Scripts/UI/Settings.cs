@@ -6,23 +6,27 @@ using TMPro;
 
 public class Settings : MonoBehaviour
 {
+    public GameObject sceneUIManager;
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown fpsDropdown;
     public int width = 1080;
     public int height = 1920;
     public int fps = 30;
     public void Start() {
-        PlayerPrefs.SetInt("WidthRes", 1080);
-        PlayerPrefs.SetInt("HeightRes", 1920);
-        PlayerPrefs.Save();
+        width = PlayerPrefs.GetInt("WidthRes", 1080); 
+        height = PlayerPrefs.GetInt("HeightRes", 1920);
+        fps = PlayerPrefs.GetInt("FPS", 30);
+
+        UpdateDropdown(resolutionDropdown, $"{width} x {height}");
+        UpdateDropdown(fpsDropdown, fps.ToString());
     }
     public void UpdateResolution() {
-        string resolution = resolutionDropdown.captionText.text;
-        Debug.Log("resolution " + resolution); 
-        // resolution có dạng a x b 
+       string resolution = resolutionDropdown.captionText.text;
+        Debug.Log("resolution " + resolution);
         string[] dimensions = resolution.Split('x');
         width = int.Parse(dimensions[0].Trim());
         height = int.Parse(dimensions[1].Trim());
+       
     }
     public void UpdateFPS() {
         string fpsString = fpsDropdown.captionText.text;
@@ -35,10 +39,17 @@ public class Settings : MonoBehaviour
         Debug.Log(fps + " " + width + " " + height);
         gameObject.SetActive(false); 
         PlayerPrefs.Save();
+        sceneUIManager.GetComponent<HomeScene>().UpdateSetting();
 
     }
-    public void Cancel () {
-        gameObject.SetActive(false); 
+    private void UpdateDropdown(TMP_Dropdown dropdown, string value)
+    {
+        int index = dropdown.options.FindIndex(option => option.text == value);
+        if (index != -1)
+        {
+            dropdown.value = index;
+            dropdown.RefreshShownValue(); 
+        }
     }
    
 }
