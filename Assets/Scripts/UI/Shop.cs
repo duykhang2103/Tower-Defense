@@ -10,7 +10,6 @@ public class Shop : MonoBehaviour
     public TMP_Text diamondText;
     public TMP_Text skillsText;
     public void Start() {
-        
         UpdateText();
     }
     public void BuySkill() {
