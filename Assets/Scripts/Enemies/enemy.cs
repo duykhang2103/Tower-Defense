@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
     public string enemyName;
+
     [HideInInspector] public int maxHealth = 100;
     [HideInInspector] public int health = 100;
     [HideInInspector] public int atk = 10;
@@ -15,7 +17,6 @@ public class Enemy : MonoBehaviour
     public GameObject goldPrefab;
     private GameObject background;
     private Attribute attributes;
-
     protected Animator animator;
     public Soldier soldier;
 
@@ -165,7 +166,7 @@ public class Enemy : MonoBehaviour
             Debug.LogError($"No Waypoints found for pathIndex {pathIndex}");
         }
     }
-
+    
     private void OnDestroy()
     {
         Vector3 position = transform.position;
@@ -177,10 +178,12 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(gameObject);
-
         if (goldPrefab != null)
         {
+            if(!this.gameObject.scene.isLoaded) return;
+        
             GameObject coin = Instantiate(goldPrefab, position, Quaternion.identity);
+            
             Destroy(coin, 2f);
         }
 

@@ -7,6 +7,7 @@ using TMPro;
 public class SkillController : MonoBehaviour
 {
     public GameObject skillArea;
+    public GameObject explosionPrefab;
     bool checkerActiveSkill = false;
     private Camera mainCamera;
     public TMP_Text numSkillText;
@@ -20,6 +21,7 @@ public class SkillController : MonoBehaviour
         skillArea.SetActive(false);
 
         numSkills = PlayerPrefs.GetInt("Skills");
+        Debug.Log("numSkills " + numSkills);
         numSkillText.text = numSkills.ToString();
     }
 
@@ -41,25 +43,29 @@ public class SkillController : MonoBehaviour
             mousePosition.z = mainCamera.nearClipPlane;
             Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             skillArea.transform.position = new Vector3(worldPosition.x, worldPosition.y, 0f);
-            // if run off skills
-            if (numSkills == 0) {
-                clickSkill();
-                Time.timeScale = 0f;
-                openShop();
-                return;
-            }
+           
+            
             // mouse right click = cancle skill
             if (Input.GetMouseButtonDown(1))
             {
                 clickSkill();
+                
                 return;
             }
             // left click = active skill
             if (Input.GetMouseButtonDown(0) && !PointerOnUI())
             {
+                // if run off skills
+                if (numSkills == 0) {
+                    clickSkill();
+                    Time.timeScale = 0f;
+                    openShop();
+                    return;
+                }
                 StartCoroutine(ActivateExplosionCoroutine());
                 ApplyDameForEnemy();
                 numSkills --;
+                PlayerPrefs.SetInt("Skills", numSkills);
                 numSkillText.text = numSkills.ToString();
                 return;
             }
@@ -67,18 +73,16 @@ public class SkillController : MonoBehaviour
     }
     private IEnumerator ActivateExplosionCoroutine()
     {
-        Transform explosionTransform = skillArea.transform.Find("Explosions");
-        if (explosionTransform != null)
-        {
-            GameObject explosion = explosionTransform.gameObject;
-            explosion.SetActive(true);
-            yield return new WaitForSeconds(0.9f);
-            explosion.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("Explosions object not found in skillArea!");
-        }
+        GameObject explosion = Instantiate(explosionPrefab);
+        explosion.SetActive(true);
+        explosion.transform.SetParent(skillArea.transform);
+        explosion.transform.localScale = skillArea.transform.Find("Explosions").transform.localScale;
+        explosion.transform.position = skillArea.transform.position;
+        explosion.transform.SetParent(skillArea.transform.parent);
+        
+        yield return new WaitForSeconds(0.9f);
+        Destroy(explosion);
+        
     }
     private bool PointerOnUI()
     {
