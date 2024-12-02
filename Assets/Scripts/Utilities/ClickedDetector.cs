@@ -29,4 +29,18 @@ public class ClickedDetector : MonoBehaviour
             Debug.Log("No object hit");
         }
     }
+
+    public string getObjectHitName () {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            return hit.collider.gameObject.name;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

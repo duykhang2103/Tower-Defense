@@ -14,7 +14,9 @@ public class Badge : MonoBehaviour {
   }
 
   void Update() {
-    if (badgeName == "Win all maps" && gameManager.gameStageStr == condition) {
+    if (badgeName == "Win all maps" 
+    // && PlayerPrefs.GetInt(gameManager.Instance.gameStageStr) == condition
+    ) {
       achieved = true;
       this.gameObject.SetActive(true);
       defaultBadge.SetActive(false);
