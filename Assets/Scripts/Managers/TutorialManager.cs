@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class TutorialManager : MonoBehaviour {
   public int curStep;
+  public GameObject[] objectsToHit;
   public string textToDisplay;
 
   public GameObject[] hitClicksToContinue;
