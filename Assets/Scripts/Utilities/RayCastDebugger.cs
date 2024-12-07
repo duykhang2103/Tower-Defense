@@ -1,24 +1,23 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
-public class RaycastDebugger : MonoBehaviour
+public class RaycastDebugger2D : MonoBehaviour
 {
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(mousePos, Vector2.zero);
+            if (hits.Length > 0)
             {
-                position = Input.mousePosition
-            };
-
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointerData, results);
-
-            foreach (var result in results)
+                foreach (RaycastHit2D hit in hits)
+                {
+                    Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
+                }
+            }
+            else
             {
-                Debug.Log("Raycast hit: " + result.gameObject.name);
+                Debug.Log("No objects hit.");
             }
         }
     }
