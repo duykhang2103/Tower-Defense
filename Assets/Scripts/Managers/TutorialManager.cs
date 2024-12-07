@@ -12,7 +12,6 @@ public class TutorialManager : MonoBehaviour {
     public GameObject shootTower;
     public GameObject summonTower;
     public GameObject soldier;
-    public GameObject SkillBtn;
     public GameObject StartWaveBtn;
     public bool isFocusTower = false;
 
@@ -26,9 +25,7 @@ public class TutorialManager : MonoBehaviour {
         "When the soldier appears, click a position within the tower to move your soldier",
         "Click the tower again to turn off focus",
         "Now click here to start the monster spawn.",
-        "If you want to use a skill, click this button.",
-        "click anywhere to activate the skill.",
-        "Click the button again to cancel using the skill",
+        "Click BACK button on the top left corner to leave tutorial"
     };
     public void UpdateStep(int StepIdx)
     {
@@ -70,14 +67,12 @@ public class TutorialManager : MonoBehaviour {
                 {
                     spriteRenderer.sortingLayerName = "UI";
                 }
-                Invoke("DelayForNextStep", 2.5f);
+                Invoke("DelayForNextStep", 3f);
                 break;
             case 8:
                 GameObject.Find("Panel").SetActive(false);
-                Invoke("DelayForNextStep", 2.5f);
                 break;
             case 9:
-                SkillBtn.SetActive(true);
                 break;
 
         }

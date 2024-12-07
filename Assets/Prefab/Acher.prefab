@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 128329316110184292}
   m_Layer: 0
   m_Name: Acher
-  m_TagString: Untagged
+  m_TagString: soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
