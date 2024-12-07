@@ -149,6 +149,10 @@ public class Enemy : MonoBehaviour
     private void SetWaypoints()
     {
         waypoints = new List<Transform>();
+        // for (int i = 0; i < path; i++)
+        // {
+        //     GetWaypoints(pathPointsIndices[i]);
+        // }
         GameObject waypointsParent = GameObject.Find($"WayPoints_{pathIndex}");
         if (waypointsParent == null)
         {
