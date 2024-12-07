@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Soldier : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class Soldier : MonoBehaviour
             animator.SetBool("fight", false);
             MoveSoldier(lastPosition);
         }
-        if (tower && tower.isFocused && Input.GetMouseButtonDown(0)) 
+        if (tower && tower.isFocused && !PointerOnUI() && Input.GetMouseButtonDown(0)) 
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = tower.transform.position.z; 
@@ -128,5 +129,11 @@ public class Soldier : MonoBehaviour
                 healthBar.gameObject.SetActive(true);
             }
         }
+    }
+    private bool PointerOnUI()
+    {
+        bool isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        Debug.Log($"Pointer over UI: {isOverUI}");
+        return isOverUI;
     }
 }

@@ -5,8 +5,8 @@ public class OpenSpot : MonoBehaviour {
     public GameObject shootingTowerPrefab;
     private GameObject tower;
     private bool isActivated = false;
-    public GameObject shootingTowerBtn;
-    public GameObject summoningTowerBtn;
+    public GameObject shootingTowerBtn = null;
+    public GameObject summoningTowerBtn = null;
     private void OnMouseDown() {
 
         if (tower == null) {
@@ -16,8 +16,8 @@ public class OpenSpot : MonoBehaviour {
 
     private void toggleActivate() {
         isActivated = !isActivated;
-        shootingTowerBtn.SetActive(isActivated);
-        summoningTowerBtn.SetActive(isActivated);
+        if (shootingTowerBtn) shootingTowerBtn.SetActive(isActivated);
+        if (summoningTowerBtn) summoningTowerBtn.SetActive(isActivated);
     }
 
     public void BuildTower(string towerType) {
@@ -41,8 +41,8 @@ public class OpenSpot : MonoBehaviour {
     }
 
     private void Start() {
-        shootingTowerBtn.SetActive(false);
-        summoningTowerBtn.SetActive(false);
+        if (shootingTowerBtn != null) shootingTowerBtn.SetActive(false);
+        if (summoningTowerBtn != null) summoningTowerBtn.SetActive(false);
     }
 
 }

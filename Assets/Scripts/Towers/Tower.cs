@@ -21,7 +21,9 @@
 
         void Start()
         {
-            SetButtonsActive(false);
+            ScopeArea.SetActive(false);
+            buyArcherBtn.SetActive(false);
+            buyWarriorBtn.SetActive(false);
         }
 
         void Update()
@@ -30,22 +32,13 @@
                 status = 0;
             }
         }
-
-        
-        private void OnMouseDown()
+        public void ToggleButton()
         {
             isFocused = !isFocused;
-            if (isFocused) Debug.Log("focus");
-            else Debug.Log("not focus");
-            SetButtonsActive(isFocused);
-        }
-
-        private void SetButtonsActive(bool active)
-        {
-            ScopeArea.SetActive(active);
+            ScopeArea.SetActive(isFocused);
             // buttons showed when status = 0
-            buyArcherBtn.SetActive(active && status == 0);
-            buyWarriorBtn.SetActive(active && status == 0);
+            buyArcherBtn.SetActive(isFocused && status == 0);
+            buyWarriorBtn.SetActive(isFocused && status == 0);
             // TODO: buttons showed when status = 1
 
             // TODO: buttons showed when status = 2
@@ -71,7 +64,13 @@
             }
             yield return new WaitForSeconds(0.1f); 
             status = 1;
-            SetButtonsActive(true);
+            isFocused = false;
+            ToggleButton();
+            
+            
+
+
+
         }
         public void UpgradeTower()
         {

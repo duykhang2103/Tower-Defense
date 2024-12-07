@@ -32,6 +32,8 @@ public class Warrior : Soldier {
 
     private void ApplyDamageToEnemy() {
         if (enemy != null) {
+            AudioSource audioSlash = GetComponent<AudioSource>();
+            audioSlash.Play();
             enemy.TakeDamage(atk);
         }
         else {
