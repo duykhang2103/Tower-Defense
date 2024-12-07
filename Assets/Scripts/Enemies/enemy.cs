@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour
     private Slider healthBar;
     private int currentPointIndex = 0;
     private List<Transform> waypoints;
-
     public void Start()
     {
         attributes = GetComponent<Attribute>();
@@ -133,7 +132,10 @@ public class Enemy : MonoBehaviour
             else healthBar.gameObject.SetActive(true);
         }
     }
-
+    public void SetPath(int idx)
+    {
+        pathIndex = idx;
+    }
     private void SetSpawnPoint()
     {
         if (waypoints != null && waypoints.Count > 0)
