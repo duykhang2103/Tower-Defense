@@ -39,4 +39,11 @@ public class MapScene : MonoBehaviour
         
 
     }
+
+    private void closeAchievement() {
+        GameObject achievement = GameObject.Find("Achievement");
+        if (achievement != null) {
+            achievement.SetActive(false);
+        }
+    }
 }

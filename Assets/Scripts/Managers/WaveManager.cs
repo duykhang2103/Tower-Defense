@@ -40,6 +40,8 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave()
     {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         if (isWaveFinished) 
         {
             

@@ -28,6 +28,7 @@ public class OpenSpot : MonoBehaviour {
             } else if (towerType == "summoning") {
                 tower = Instantiate(summoningTowerPrefab, transform.position, Quaternion.identity);
             }
+
             GameObject background = GameObject.Find("BackGround"); 
             if (background != null) {
                 tower.transform.SetParent(background.transform);
