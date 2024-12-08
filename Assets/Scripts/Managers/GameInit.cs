@@ -17,5 +17,6 @@ public class GameInit : MonoBehaviour
         PlayerPrefs.SetInt("Diamond", 10);
         PlayerPrefs.SetInt("Skills", 3);
         
+        
     }
 }
