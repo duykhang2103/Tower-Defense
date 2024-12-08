@@ -71,8 +71,10 @@ public class TutorialManager : MonoBehaviour {
                 break;
             case 8:
                 GameObject.Find("Panel").SetActive(false);
+                Invoke("DelayForNextStep", 5f);
                 break;
             case 9:
+                
                 break;
 
         }
