@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour
     private Slider healthBar;
     private int currentPointIndex = 0;
     private List<Transform> waypoints;
-
     public void Start()
     {
         attributes = GetComponent<Attribute>();
@@ -43,22 +42,23 @@ public class Enemy : MonoBehaviour
         }
         animator = GetComponentInChildren<Animator>();
         healthBar = GetComponentInChildren<Slider>();
-        if (healthBar)
+        if (healthBar != null)
         {
             healthBar.maxValue = maxHealth;
             UpdateHealthBar();
         }
 
-        SetWaypoints();
-        SetSpawnPoint();
+        //SetWaypoints();
+        //SetSpawnPoint();
     }
 
     public virtual void Update()
     {
 
+        
         if (soldier != null)
         {
-            Debug.Log("enemy fight");
+            // Debug.Log("enemy fight");
             animator.SetBool("fight", true);
             transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
         }
@@ -73,13 +73,13 @@ public class Enemy : MonoBehaviour
     }
     public void Attack(Soldier _soldier)
     {
-        Debug.Log("enemy attack ");
+        // Debug.Log("enemy attack ");
         soldier = _soldier;
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log("Torch takes " + damage + " damage");
+        // Debug.Log("Torch takes " + damage + " damage");
         health -= damage;
         UpdateHealthBar();
         if (health <= 0)
@@ -133,7 +133,12 @@ public class Enemy : MonoBehaviour
             else healthBar.gameObject.SetActive(true);
         }
     }
-
+    public void SetPath(int idx)
+    {
+        pathIndex = idx;
+        SetWaypoints();
+        SetSpawnPoint();
+    }
     private void SetSpawnPoint()
     {
         if (waypoints != null && waypoints.Count > 0)
@@ -149,6 +154,10 @@ public class Enemy : MonoBehaviour
     private void SetWaypoints()
     {
         waypoints = new List<Transform>();
+        // for (int i = 0; i < path; i++)
+        // {
+        //     GetWaypoints(pathPointsIndices[i]);
+        // }
         GameObject waypointsParent = GameObject.Find($"WayPoints_{pathIndex}");
         if (waypointsParent == null)
         {
@@ -176,7 +185,9 @@ public class Enemy : MonoBehaviour
             soldier.enemy = null;
             soldier.FindEnemyInRange();
         }
-
+        
+        PlayerPrefs.SetInt("Enemies", PlayerPrefs.GetInt("Enemies") + 1);
+        Debug.Log("enemies kills is" + PlayerPrefs.GetInt("Enemies", 0));
         Destroy(gameObject);
         if (goldPrefab != null)
         {

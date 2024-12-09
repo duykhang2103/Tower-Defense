@@ -14,7 +14,7 @@ public class Range : MonoBehaviour
     {
         if (other.CompareTag("enemy"))
         {
-            Debug.Log("Enemy entered range of soldier");
+            // Debug.Log("Enemy entered range of soldier");
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null && !enemies.Contains(enemy))
             {
@@ -28,7 +28,7 @@ public class Range : MonoBehaviour
     {
         if (other.CompareTag("enemy"))
         {
-            Debug.Log("Enemy left range of soldier");
+            // Debug.Log("Enemy left range of soldier");
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null && enemies.Contains(enemy))
             {

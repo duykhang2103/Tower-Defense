@@ -8,7 +8,8 @@ public class ClickedDetector : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // 0 là nút chuột trái
         {
             Debug.Log("haved clicked");
-            DetectClickedObject();
+            // DetectClickedObject();
+            GetClickedObjectName();
         }
     }
 
@@ -27,6 +28,19 @@ public class ClickedDetector : MonoBehaviour
         else
         {
             Debug.Log("No object hit");
+        }
+    }
+
+    public string GetClickedObjectName()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
+        if (hit.collider !=null) {
+             return hit.collider.gameObject.name;
+        }
+        else
+        {
+            return "a";
         }
     }
 }

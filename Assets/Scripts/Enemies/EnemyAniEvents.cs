@@ -16,9 +16,11 @@ public class EnemyAniEvents : MonoBehaviour
     }
     public void ApplyDameToSoldier() {
         soldier = enemy.soldier;
+        AudioSource audioSlash = GetComponentInParent<AudioSource>();
         if (soldier != null && soldier.health >= 0)
         {
-            Debug.Log("ApplyDameToSoldier");
+            audioSlash.Play();
+            // Debug.Log("ApplyDameToSoldier");
             soldier.TakeDamage(enemy.atk);
         }
         else {

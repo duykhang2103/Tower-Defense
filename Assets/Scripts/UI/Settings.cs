@@ -12,10 +12,22 @@ public class Settings : MonoBehaviour
     public int width = 1080;
     public int height = 1920;
     public int fps = 60;
+    public Slider volumeSlider;
+    float audio = 1f;
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void Start() {
         width = PlayerPrefs.GetInt("WidthRes", 1080); 
         height = PlayerPrefs.GetInt("HeightRes", 1920);
         fps = PlayerPrefs.GetInt("FPS", 60);
+        volumeSlider.value = AudioManager.instance.GetVolume();
 
         UpdateDropdown(resolutionDropdown, $"{width} x {height}");
         UpdateDropdown(fpsDropdown, fps.ToString());
@@ -36,6 +48,7 @@ public class Settings : MonoBehaviour
         PlayerPrefs.SetInt("FPS", fps);
         PlayerPrefs.SetInt("WidthRes", width);
         PlayerPrefs.SetInt("HeightRes", height);
+        AudioManager.instance.SetVolume(audio);
         Debug.Log(fps + " " + width + " " + height);
         gameObject.SetActive(false); 
         PlayerPrefs.Save();
@@ -51,5 +64,10 @@ public class Settings : MonoBehaviour
             dropdown.RefreshShownValue(); 
         }
     }
-   
+    
+    public void UpdateVolume()
+    {
+        audio = volumeSlider.value;
+
+    }
 }

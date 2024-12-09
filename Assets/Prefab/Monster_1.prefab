@@ -437,9 +437,10 @@ MonoBehaviour:
   health: 100
   atk: 10
   speed: 2
-  pathFileName: path3.json
+  pathIndex: 1
   pathPointsIndices: 
   goldPrefab: {fileID: 3321611934510342374, guid: 021922b509d6e454bb4225f002ceca83, type: 3}
+  soldier: {fileID: 0}
 --- !u!58 &3630473896996314304
 CircleCollider2D:
   m_ObjectHideFlags: 0

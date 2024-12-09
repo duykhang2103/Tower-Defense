@@ -13,7 +13,7 @@ public class WaveManager : MonoBehaviour
     private MonsFactory monsFactory; 
     [SerializeField]
     private List<Wave> monsters;  
-
+    public int[] pathIds;
     public float spawnInterval = 1f;
     public int numWaves = 5;
     private int currentWave = 0;
@@ -40,6 +40,8 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave()
     {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         if (isWaveFinished) 
         {
             
@@ -53,10 +55,15 @@ public class WaveManager : MonoBehaviour
         enemiesSpawned = 0;
         Debug.Log($"Spawn interval: {spawnInterval} seconds");
 
+
         foreach (int monsterId in monsters[currentWave].monsterIds)
         {
-            GameObject enemy = monsFactory.Create(monsterId, transform.position, Quaternion.identity);
-            enemiesSpawned++;
+            foreach(int pathId in pathIds)
+            {
+                GameObject enemy = monsFactory.Create(monsterId, transform.position, Quaternion.identity);
+                enemiesSpawned++;
+                enemy.GetComponent<Enemy>().SetPath(pathId);
+            }
             yield return new WaitForSeconds(spawnInterval);
         }
 

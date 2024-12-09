@@ -6,16 +6,17 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } //singleton
+    public static GameManager Instance { get; private set; } 
     public string gameStageStr = "Stage_1";
     public WaveManager waveManager;
     public GameObject VictoryFrame;
     public GameObject DefeatFrame;
+ 
     public GameObject AchievementBoard;
-
     public TextMeshProUGUI healthText; 
-    public TextMeshProUGUI goldText; 
+    public TextMeshProUGUI goldText;
 
+    public GameObject canvas;
     public int playerHealth = 15;
     public int gold = 100;
     private bool isWaveFinished = false;
@@ -64,8 +65,47 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        CheckAchievement();
     }
-    
+    public void CheckAchievement()
+    {
+        if (PlayerPrefs.GetInt("win all maps", 0) == 0)
+        {
+            
+            if (PlayerPrefs.GetInt("Stage_1") > 0 && PlayerPrefs.GetInt("Stage_2") > 0)
+            {
+                PlayerPrefs.SetInt("win all maps", 1);
+                GameObject achievementPanel = Instantiate(AchievementBoard, canvas.transform);
+                achievementPanel.GetComponent<PopupAchievement>().Init("Win all maps");
+            }
+            
+            
+        }
+        if (PlayerPrefs.GetInt("earns 20 diamonds", 0) == 0)
+        {
+            
+            if (PlayerPrefs.GetInt("Diamonds") >= 20)
+            {
+                PlayerPrefs.SetInt("earns 20 diamonds", 1);
+                GameObject achievementPanel = Instantiate(AchievementBoard, canvas.transform);
+                achievementPanel.GetComponent<PopupAchievement>().Init("Earns 20 diamonds ");
+            }
+        }
+        if (PlayerPrefs.GetInt("Kill 10 enemies", 0) == 0)
+        {
+            
+            if (PlayerPrefs.GetInt("Enemies") >= 10)
+            {
+                PlayerPrefs.SetInt("Kill 10 enemies", 1);
+                GameObject achievementPanel = Instantiate(AchievementBoard, canvas.transform);
+                achievementPanel.GetComponent<PopupAchievement>().Init("Kills 10 enemies");
+            }
+        }
+            
+    }
+
+
+
     public void UpdateHealthText()
     {
         healthText.text = playerHealth.ToString();

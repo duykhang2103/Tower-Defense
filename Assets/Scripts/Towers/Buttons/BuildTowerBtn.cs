@@ -7,6 +7,10 @@ public class BuildTowerBtn : MonoBehaviour {
   private void OnMouseDown() {
     if (openSpot != null) {
       openSpot.GetComponent<OpenSpot>().BuildTower(towerType);
+      
     }
+  }
+
+  private void OnMouseUp() {
   }
 }
