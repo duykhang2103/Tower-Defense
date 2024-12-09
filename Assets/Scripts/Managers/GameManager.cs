@@ -91,12 +91,12 @@ public class GameManager : MonoBehaviour
                 achievementPanel.GetComponent<PopupAchievement>().Init("Earns 20 diamonds ");
             }
         }
-        if (PlayerPrefs.GetInt("kills 10 enemies", 0) == 0)
+        if (PlayerPrefs.GetInt("Kill 10 enemies", 0) == 0)
         {
             
             if (PlayerPrefs.GetInt("Enemies") >= 10)
             {
-                PlayerPrefs.SetInt("kills 10 enemies", 1);
+                PlayerPrefs.SetInt("Kill 10 enemies", 1);
                 GameObject achievementPanel = Instantiate(AchievementBoard, canvas.transform);
                 achievementPanel.GetComponent<PopupAchievement>().Init("Kills 10 enemies");
             }

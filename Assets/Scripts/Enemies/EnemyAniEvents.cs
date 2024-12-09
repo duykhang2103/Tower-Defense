@@ -20,7 +20,7 @@ public class EnemyAniEvents : MonoBehaviour
         if (soldier != null && soldier.health >= 0)
         {
             audioSlash.Play();
-            Debug.Log("ApplyDameToSoldier");
+            // Debug.Log("ApplyDameToSoldier");
             soldier.TakeDamage(enemy.atk);
         }
         else {

@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         
         if (soldier != null)
         {
-            Debug.Log("enemy fight");
+            // Debug.Log("enemy fight");
             animator.SetBool("fight", true);
             transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
         }
@@ -73,13 +73,13 @@ public class Enemy : MonoBehaviour
     }
     public void Attack(Soldier _soldier)
     {
-        Debug.Log("enemy attack ");
+        // Debug.Log("enemy attack ");
         soldier = _soldier;
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log("Torch takes " + damage + " damage");
+        // Debug.Log("Torch takes " + damage + " damage");
         health -= damage;
         UpdateHealthBar();
         if (health <= 0)

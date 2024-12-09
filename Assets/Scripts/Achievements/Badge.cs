@@ -29,7 +29,7 @@ public class Badge : MonoBehaviour {
       achieved = true;
       this.gameObject.SetActive(true);
       defaultBadge.SetActive(false);
-    } else if (badgeName == "Kill total 20 enemies" && PlayerPrefs.GetInt("Enemies") >= 10
+    } else if (badgeName == "Kill 10 enemies" && PlayerPrefs.GetInt("Enemies") >= 10
 
     // && gameManager.killedEnemies == condition
     ) {

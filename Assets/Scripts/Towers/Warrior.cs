@@ -22,7 +22,7 @@ public class Warrior : Soldier {
     public override void Attack() {
         if (enemy != null && enemy.soldier == null) {
             isAttacking = false;
-            Debug.Log("warrior attack");
+            // Debug.Log("warrior attack");
             Vector3 oppositePositionWithEnemy = enemy.transform.position + Vector3.left;
             targetPosition = oppositePositionWithEnemy;
             enemy.Attack(this);
@@ -38,13 +38,13 @@ public class Warrior : Soldier {
         }
         else {
             animator.SetBool("fight", false);
-            Debug.Log("no enemy");
+            // Debug.Log("no enemy");
             FindEnemyInRange();
         }
     }
 
     public override void TakeDamage(int damage) {
-        Debug.Log("warrior take " + damage + " damage");
+        // Debug.Log("warrior take " + damage + " damage");
         health -= damage;
         UpdateHealthBar();
         if (health <= 0) {

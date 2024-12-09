@@ -12,6 +12,15 @@ public class Shop : MonoBehaviour
     public void Start() {
         UpdateText();
     }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void BuySkill() {
         Debug.Log("BuySkill");
         if (diamond >= 5) {

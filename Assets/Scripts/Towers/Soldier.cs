@@ -133,7 +133,6 @@ public class Soldier : MonoBehaviour
     private bool PointerOnUI()
     {
         bool isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
-        Debug.Log($"Pointer over UI: {isOverUI}");
         return isOverUI;
     }
 }
