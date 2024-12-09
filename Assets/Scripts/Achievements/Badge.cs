@@ -24,12 +24,13 @@ public class Badge : MonoBehaviour {
       achieved = true;
       this.gameObject.SetActive(true);
       defaultBadge.SetActive(false);
-    } else if (badgeName == "Have 20 diamonds" && PlayerPrefs.GetInt("Diamonds") >= 0
+    } else if (badgeName == "Earn 20 diamonds"  && PlayerPrefs.GetInt("Diamonds") >= 20
     ) {
       achieved = true;
       this.gameObject.SetActive(true);
       defaultBadge.SetActive(false);
-    } else if (badgeName == "Kill 10 enemies" 
+    } else if (badgeName == "Kill total 20 enemies" && PlayerPrefs.GetInt("Enemies") >= 10
+
     // && gameManager.killedEnemies == condition
     ) {
       achieved = true;

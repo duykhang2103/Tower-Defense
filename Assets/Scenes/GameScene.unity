@@ -1756,7 +1756,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 402475229}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1610298955}
+        m_TargetAssemblyTypeName: GameScene, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: GameScene2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &402475229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4505,6 +4517,7 @@ MonoBehaviour:
   - monsterIds: 010000000100000002000000
   - monsterIds: 0100000001000000010000000200000002000000
   - monsterIds: 0200000002000000020000000400000004000000
+  pathIds: 01000000
   spawnInterval: 0.5
   numWaves: 2
   startWaveBtn: {fileID: 548964083}
@@ -6826,7 +6839,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1501734649}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1610298955}
+        m_TargetAssemblyTypeName: GameScene, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: GameScene
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1501734649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8729,9 +8754,10 @@ MonoBehaviour:
   waveManager: {fileID: 956894678}
   VictoryFrame: {fileID: 1385102024}
   DefeatFrame: {fileID: 1058986758}
-  AchievementBoard: {fileID: 0}
+  AchievementBoard: {fileID: 5835620877601316772, guid: 841cdbe39ce404379958988bf506db1e, type: 3}
   healthText: {fileID: 1128279943}
   goldText: {fileID: 1160618997}
+  canvas: {fileID: 0}
   playerHealth: 15
   gold: 100
 --- !u!4 &2098626522
